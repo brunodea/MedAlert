@@ -8,10 +8,9 @@
 
 #import "MedAlertAppDelegate.h"
 
-#import "MedAlertViewController.h"
+#import "LoginViewController.h"
 
 @implementation MedAlertAppDelegate
-
 
 @synthesize window=_window;
 

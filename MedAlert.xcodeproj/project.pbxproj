@@ -16,6 +16,8 @@
 		12FAAD4E1396619D00E059B9 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12FAAD4C1396619D00E059B9 /* MainWindow.xib */; };
 		12FAAD511396619D00E059B9 /* MedAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FAAD501396619D00E059B9 /* MedAlertViewController.m */; };
 		12FAAD541396619D00E059B9 /* MedAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12FAAD521396619D00E059B9 /* MedAlertViewController.xib */; };
+		12FAAD5D139669A900E059B9 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FAAD5B139669A900E059B9 /* LoginViewController.m */; };
+		12FAAD5E139669A900E059B9 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12FAAD5C139669A900E059B9 /* LoginViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +35,9 @@
 		12FAAD4F1396619D00E059B9 /* MedAlertViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MedAlertViewController.h; sourceTree = "<group>"; };
 		12FAAD501396619D00E059B9 /* MedAlertViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MedAlertViewController.m; sourceTree = "<group>"; };
 		12FAAD531396619D00E059B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MedAlertViewController.xib; sourceTree = "<group>"; };
+		12FAAD5A139669A900E059B9 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		12FAAD5B139669A900E059B9 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		12FAAD5C139669A900E059B9 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +91,9 @@
 				12FAAD501396619D00E059B9 /* MedAlertViewController.m */,
 				12FAAD521396619D00E059B9 /* MedAlertViewController.xib */,
 				12FAAD411396619D00E059B9 /* Supporting Files */,
+				12FAAD5A139669A900E059B9 /* LoginViewController.h */,
+				12FAAD5B139669A900E059B9 /* LoginViewController.m */,
+				12FAAD5C139669A900E059B9 /* LoginViewController.xib */,
 			);
 			path = MedAlert;
 			sourceTree = "<group>";
@@ -151,6 +159,7 @@
 				12FAAD451396619D00E059B9 /* InfoPlist.strings in Resources */,
 				12FAAD4E1396619D00E059B9 /* MainWindow.xib in Resources */,
 				12FAAD541396619D00E059B9 /* MedAlertViewController.xib in Resources */,
+				12FAAD5E139669A900E059B9 /* LoginViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,6 +173,7 @@
 				12FAAD481396619D00E059B9 /* main.m in Sources */,
 				12FAAD4B1396619D00E059B9 /* MedAlertAppDelegate.m in Sources */,
 				12FAAD511396619D00E059B9 /* MedAlertViewController.m in Sources */,
+				12FAAD5D139669A900E059B9 /* LoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
