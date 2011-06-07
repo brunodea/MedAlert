@@ -17,6 +17,8 @@
     IBOutlet UITextField *passwordTextField;
     
     IBOutlet UIButton *loginButton;
+    
+    IBOutlet UITabBarItem *singInTabBarItem;
 }
 
 @property (nonatomic, retain) IBOutlet UILabel *usernameLabel;
@@ -26,5 +28,8 @@
 @property (nonatomic, retain) IBOutlet UITextField *passwordTextField;
 
 @property (nonatomic, retain) IBOutlet UIButton *loginButton;
+
+@property (nonatomic, retain) IBOutlet UITabBarItem *signInTabBarItem;
+
 
 @end

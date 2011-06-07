@@ -19,6 +19,8 @@
 
 @synthesize loginButton;
 
+@synthesize signInTabBarItem;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -47,6 +49,11 @@
     [super viewDidLoad];
     
     passwordTextField.secureTextEntry = YES;
+    
+    usernameTextField.delegate = (id)self;
+    usernameTextField.returnKeyType = UIReturnKeyDone;
+    passwordTextField.delegate = (id)self;
+    passwordTextField.returnKeyType = UIReturnKeyDone;
 }
 
 - (void)viewDidUnload
@@ -59,7 +66,23 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return YES;//(interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+//Helps the keyboard to hide.
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+//keyboard hide when touching the background
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [usernameTextField resignFirstResponder];
+    [passwordTextField resignFirstResponder];
+    
+    [super touchesBegan:touches withEvent:event];     
 }
 
 @end
