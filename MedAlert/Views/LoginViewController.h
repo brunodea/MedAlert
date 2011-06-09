@@ -13,14 +13,8 @@
     IBOutlet UILabel *usernameLabel;
     IBOutlet UILabel *passwordLabel;
     
-    IBOutlet UITextField *usernameTextField;
-    IBOutlet UITextField *passwordTextField;
-    
     IBOutlet UIButton *loginButton;
 }
-
-@property (nonatomic, retain) IBOutlet UILabel *usernameLabel;
-@property (nonatomic, retain) IBOutlet UILabel *passwordLabel;
 
 @property (nonatomic, retain) IBOutlet UITextField *usernameTextField;
 @property (nonatomic, retain) IBOutlet UITextField *passwordTextField;

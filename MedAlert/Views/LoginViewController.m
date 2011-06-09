@@ -11,8 +11,6 @@
 
 @implementation LoginViewController
 
-@synthesize usernameLabel;
-@synthesize passwordLabel;
 
 @synthesize usernameTextField;
 @synthesize passwordTextField;
