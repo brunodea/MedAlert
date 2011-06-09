@@ -60,6 +60,8 @@
     [super viewDidUnload];
     [usernameTextField release];
     [passwordTextField release];
+    [rememberMeLabel release];
+    [rememberMeSwitch release];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
