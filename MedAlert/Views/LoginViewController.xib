@@ -118,7 +118,7 @@
 						<string key="NSFrame">{{22, 135}, {283, 31}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="770809617"/>
+						<reference key="NSNextKeyView" ref="192530174"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -156,7 +156,7 @@
 							</object>
 						</object>
 					</object>
-					<object class="IBUISwitch" id="852949906">
+					<object class="IBUISwitch" id="580426077">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{206, 192}, {94, 27}}</string>
@@ -169,13 +169,13 @@
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<bool key="IBUIOn">YES</bool>
 					</object>
-					<object class="IBUILabel" id="770809617">
+					<object class="IBUILabel" id="192530174">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{22, 195}, {99, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="852949906"/>
+						<reference key="NSNextKeyView" ref="580426077"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -189,11 +189,11 @@
 						</object>
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC45ODc5NTE4MDcyIDAuOTc1OTAzNjE0NSAxAA</bytes>
+							<bytes key="NSRGB">MC45OTI0NzQ5MTcxIDEgMC45NjA5NTk1MzUxAA</bytes>
 						</object>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
-						<float key="IBUIMinimumFontSize">10</float>
+						<float key="IBUIMinimumFontSize">14</float>
 					</object>
 				</object>
 				<string key="NSFrame">{{0, 20}, {320, 460}}</string>
@@ -4628,6 +4628,22 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 					</object>
 					<int key="connectionID">33</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">rememberMeLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="192530174"/>
+					</object>
+					<int key="connectionID">36</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">rememberMeSwitch</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="580426077"/>
+					</object>
+					<int key="connectionID">37</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -4645,10 +4661,10 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="917536137"/>
 							<reference ref="259157741"/>
-							<reference ref="770809617"/>
+							<reference ref="192530174"/>
 							<reference ref="969139502"/>
 							<reference ref="657496645"/>
-							<reference ref="852949906"/>
+							<reference ref="580426077"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -4694,12 +4710,12 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">34</int>
-						<reference key="object" ref="852949906"/>
+						<reference key="object" ref="580426077"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">35</int>
-						<reference key="object" ref="770809617"/>
+						<reference key="object" ref="192530174"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 				</object>
@@ -4747,7 +4763,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">35</int>
+			<int key="maxID">37</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -4760,17 +4776,17 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>loginButton</string>
-							<string>passwordLabel</string>
 							<string>passwordTextField</string>
-							<string>usernameLabel</string>
+							<string>rememberMeLabel</string>
+							<string>rememberMeSwitch</string>
 							<string>usernameTextField</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIButton</string>
-							<string>UILabel</string>
 							<string>UITextField</string>
 							<string>UILabel</string>
+							<string>UISwitch</string>
 							<string>UITextField</string>
 						</object>
 					</object>
@@ -4779,9 +4795,9 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>loginButton</string>
-							<string>passwordLabel</string>
 							<string>passwordTextField</string>
-							<string>usernameLabel</string>
+							<string>rememberMeLabel</string>
+							<string>rememberMeSwitch</string>
 							<string>usernameTextField</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -4791,16 +4807,16 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">passwordLabel</string>
-								<string key="candidateClassName">UILabel</string>
-							</object>
-							<object class="IBToOneOutletInfo">
 								<string key="name">passwordTextField</string>
 								<string key="candidateClassName">UITextField</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">usernameLabel</string>
+								<string key="name">rememberMeLabel</string>
 								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">rememberMeSwitch</string>
+								<string key="candidateClassName">UISwitch</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">usernameTextField</string>

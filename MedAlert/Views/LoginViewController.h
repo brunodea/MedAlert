@@ -10,15 +10,21 @@
 
 
 @interface LoginViewController : UIViewController {
-    IBOutlet UILabel *usernameLabel;
-    IBOutlet UILabel *passwordLabel;
+    IBOutlet UITextField *usernameTextField;
+    IBOutlet UITextField *passwordTextField;
     
     IBOutlet UIButton *loginButton;
+    
+    IBOutlet UISwitch *rememberMeSwitch;
+    IBOutlet UILabel *rememberMeLabel;
 }
 
 @property (nonatomic, retain) IBOutlet UITextField *usernameTextField;
 @property (nonatomic, retain) IBOutlet UITextField *passwordTextField;
 
 @property (nonatomic, retain) IBOutlet UIButton *loginButton;
+
+@property (nonatomic, retain) IBOutlet UISwitch *rememberMeSwitch;
+@property (nonatomic, retain) IBOutlet UILabel *rememberMeLabel;
 
 @end
