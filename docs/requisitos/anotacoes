@@ -1,0 +1,11 @@
+Usuario acessar a internet para se logar e sincronizar?
+Sem médico
+configurar de quanto em quanto tempo o remedio pode ser tomado
+Para cada dosagem de medicamento, considera-se como um novo medicamento.
+   ex: diasepam 500mg, diasepam 200mg
+
+Nomes dos medicamentos só são editaveis quando isto é explicitamente dito
+   "cadeadinho"
+
+Em j2me:
+   duas telas para informações do medicamento, uma editavel e outra não

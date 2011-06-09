@@ -2,3 +2,5 @@ MedAlert.xcodeproj
 MedAlert/.DS_Store
 MedAlert/Views/.DS_Store
 .DS_Store
+*.log
+*.aux
