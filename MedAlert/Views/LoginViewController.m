@@ -89,9 +89,11 @@
 
 -(IBAction)doneButtonPressed:(id)sender
 {
-    if([[MedAlertDB instance] isValid:[usernameTextField text]:[passwordTextField text]])
+    if([[MedAlertDB instance] isValid:[usernameTextField text]:[passwordTextField text]] == YES)
     {
-        //logado com sucesso.
+        
+        UIAlertView *loginIncorrect = [[UIAlertView alloc] initWithTitle:@"Login válido." message:@"Você existe!" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        [loginIncorrect show];
     }
     else
     {

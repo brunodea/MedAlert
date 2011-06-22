@@ -52,9 +52,27 @@ static MedAlertDB *msInstance = nil;
 
 -(BOOL)isValid:(NSString *)userAnd :(NSString *)password
 {
-    NSLog(@"username:%@\npassword:%@", userAnd, password);
+    BOOL found = NO;
+    const char *dbpath = [mDBPath UTF8String];
+    sqlite3_stmt *statement;
     
-    return NO;
+    if(sqlite3_open(dbpath, &mDB))
+    {
+        NSString *SQLquery = [NSString stringWithFormat:@"SELECT name FROM user WHERE login='%@' AND password='%@'", userAnd, password];
+        const char *query_stmt = [SQLquery UTF8String];
+        
+        if(sqlite3_prepare_v2(mDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if(sqlite3_step(statement) == SQLITE_ROW)
+            {
+                found = YES;
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(mDB);
+    }
+    
+    return found;
 }
 
 -(void)createEditableCopyOfDatabaseIfNeeded 
@@ -68,14 +86,14 @@ static MedAlertDB *msInstance = nil;
     docsDir = [dirPaths objectAtIndex:0];
     
     // Build the path to the database file
-    NSString * databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent:mDBName]];
+    mDBPath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent:mDBName]];
     
     NSFileManager *filemgr = [NSFileManager defaultManager];
     
-    if([filemgr fileExistsAtPath: databasePath ] == NO)
+    if([filemgr fileExistsAtPath: mDBPath ] == NO)
     {
         NSLog(@"arquivo nao encontrado.");
-        const char *dbpath = [databasePath UTF8String];
+        const char *dbpath = [mDBPath UTF8String];
         
         if(sqlite3_open(dbpath, &mDB) == SQLITE_OK)
         {
@@ -122,6 +140,7 @@ static MedAlertDB *msInstance = nil;
 -(void)dealloc
 {
     [mDBName release];
+    [mDBPath release];
     [super dealloc];
 }
 

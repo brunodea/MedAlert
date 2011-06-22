@@ -12,6 +12,7 @@
 
 @interface MedAlertDB : NSObject {
     NSString *mDBName;
+    NSString *mDBPath;
     sqlite3 *mDB;
 }
 
