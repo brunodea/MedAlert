@@ -7,10 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <sqlite3.h>
 
 
 @interface MedAlertDB : NSObject {
-    
+    NSString *mDBName;
+    sqlite3 *mDB;
 }
+
+@property (nonatomic, retain) NSString *mDBName;
+
++(MedAlertDB *)instance;
+
+-(BOOL)isValid:(NSString *)userAnd:(NSString *)password;
+-(void)createEditableCopyOfDatabaseIfNeeded;
 
 @end
