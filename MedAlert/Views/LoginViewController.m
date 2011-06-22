@@ -89,8 +89,15 @@
 
 -(IBAction)doneButtonPressed:(id)sender
 {
-    NSLog(@"doneButtonPressed, sender:%@", sender);
-    [[MedAlertDB instance] isValid:[usernameTextField text]:[passwordTextField text]];
+    if([[MedAlertDB instance] isValid:[usernameTextField text]:[passwordTextField text]])
+    {
+        //logado com sucesso.
+    }
+    else
+    {
+        UIAlertView *loginIncorrect = [[UIAlertView alloc] initWithTitle:@"Login inválido." message:@"Login e/ou senha incorretos." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        [loginIncorrect show];
+    }
 }
 
 
