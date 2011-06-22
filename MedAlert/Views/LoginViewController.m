@@ -7,7 +7,7 @@
 //
 
 #import "LoginViewController.h"
-
+#import "MedAlertDB.h"
 
 @implementation LoginViewController
 
@@ -85,5 +85,18 @@
     
     [super touchesBegan:touches withEvent:event];     
 }
+
+
+-(IBAction)doneButtonPressed:(id)sender
+{
+    NSLog(@"doneButtonPressed, sender:%@", sender);
+    [[MedAlertDB instance] isValid:[usernameTextField text]:[passwordTextField text]];
+}
+
+
+
+
+
+
 
 @end

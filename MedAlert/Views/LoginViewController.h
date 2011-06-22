@@ -27,4 +27,7 @@
 @property (nonatomic, retain) IBOutlet UISwitch *rememberMeSwitch;
 @property (nonatomic, retain) IBOutlet UILabel *rememberMeLabel;
 
+
+-(IBAction)doneButtonPressed:(id)sender;
+
 @end
