@@ -49,8 +49,6 @@
 {
     [super viewDidLoad];
     
-    passwordTextField.secureTextEntry = YES;
-    
     usernameTextField.delegate = (id)self;
     usernameTextField.returnKeyType = UIReturnKeyDone;
     passwordTextField.delegate = (id)self;
@@ -92,9 +90,8 @@
 {
     if([[MedAlertDB instance] isValid:[usernameTextField text]:[passwordTextField text]] == YES)
     {
-        
-        UIAlertView *loginIncorrect = [[UIAlertView alloc] initWithTitle:@"Login válido." message:@"Você existe!" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-        [loginIncorrect show];
+        UIAlertView *loginCorrect = [[UIAlertView alloc] initWithTitle:@"Login válido." message:@"Você existe!" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        [loginCorrect show];
     }
     else
     {
