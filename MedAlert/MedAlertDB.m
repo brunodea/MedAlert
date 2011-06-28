@@ -92,7 +92,7 @@ static MedAlertDB *msInstance = nil;
     
     if([filemgr fileExistsAtPath: mDBPath ] == NO)
     {
-        NSLog(@"arquivo nao encontrado.");
+        NSLog(@"arquivo do BD nao encontrado.");
         const char *dbpath = [mDBPath UTF8String];
         
         if(sqlite3_open(dbpath, &mDB) == SQLITE_OK)

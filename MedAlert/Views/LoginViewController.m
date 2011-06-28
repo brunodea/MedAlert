@@ -7,6 +7,7 @@
 //
 
 #import "LoginViewController.h"
+#import "SignInViewController.h"
 #import "MedAlertDB.h"
 
 @implementation LoginViewController
@@ -16,6 +17,7 @@
 @synthesize passwordTextField;
 
 @synthesize loginButton;
+@synthesize signInButton;
 
 @synthesize rememberMeSwitch;
 @synthesize rememberMeLabel;
@@ -102,10 +104,12 @@
     }
 }
 
-
-
-
-
-
+-(IBAction)signInButtonPressed:(id)sender
+{
+    SignInViewController *siVC = [[SignInViewController alloc] init];
+    siVC.title = @"Cadastro";
+    [self.navigationController pushViewController:siVC animated:YES];
+    [siVC release];
+}
 
 @end

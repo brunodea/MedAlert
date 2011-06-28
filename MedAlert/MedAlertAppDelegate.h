@@ -8,14 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@class LoginViewController;
-
 @interface MedAlertAppDelegate : NSObject <UIApplicationDelegate> {
-
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 
-@property (nonatomic, retain) IBOutlet LoginViewController *viewController;
+@property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
 
 @end

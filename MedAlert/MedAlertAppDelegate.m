@@ -14,13 +14,19 @@
 
 @synthesize window=_window;
 
-@synthesize viewController=_viewController;
+@synthesize navigationController=_navigationController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
-     
-    self.window.rootViewController = self.viewController;
+    self.navigationController = [[UINavigationController alloc] init];
+    
+    LoginViewController *lvc = [[LoginViewController alloc] init];
+    lvc.title = @"Login";
+    [self.navigationController pushViewController:lvc animated:NO];
+    [lvc release];
+    
+    [self.window addSubview:self.navigationController.view];
+    //self.window.rootViewController = self.navigationController;
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -67,7 +73,7 @@
 - (void)dealloc
 {
     [_window release];
-    [_viewController release];
+    [_navigationController release];
     [super dealloc];
 }
 
