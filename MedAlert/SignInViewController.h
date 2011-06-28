@@ -10,7 +10,19 @@
 
 
 @interface SignInViewController : UIViewController {
+    IBOutlet UITextField *nameTF;
+    IBOutlet UITextField *loginTF;
+    IBOutlet UITextField *passwordTF;
+    IBOutlet UITextField *password2TF;
     
+    IBOutlet UIButton *doneButton;
 }
+
+@property (nonatomic, retain) IBOutlet UITextField *nameTF;
+@property (nonatomic, retain) IBOutlet UITextField *loginTF;
+@property (nonatomic, retain) IBOutlet UITextField *passwordTF;
+@property (nonatomic, retain) IBOutlet UITextField *password2TF;
+
+@property (nonatomic, retain) IBOutlet UIButton *doneButton;
 
 @end

@@ -11,6 +11,13 @@
 
 @implementation SignInViewController
 
+@synthesize nameTF;
+@synthesize loginTF;
+@synthesize passwordTF;
+@synthesize password2TF;
+
+@synthesize doneButton;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -44,14 +51,33 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    [nameTF release];
+    [loginTF release];
+    [passwordTF release];
+    [password2TF release];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return YES;
+}
+
+//Helps the keyboard to hide.
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+//keyboard hide when touching the background
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [nameTF resignFirstResponder];
+    [loginTF resignFirstResponder];
+    [passwordTF resignFirstResponder];
+    [password2TF resignFirstResponder];
+    
+    [super touchesBegan:touches withEvent:event];     
 }
 
 @end
