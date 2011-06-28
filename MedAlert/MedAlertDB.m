@@ -8,6 +8,11 @@
 
 #import "MedAlertDB.h"
 
+@interface MedAlertDB (hiden)
+
+-(sqlite3_stmt *)query:(NSString *)SQLquery;
+
+@end
 
 @implementation MedAlertDB
 
@@ -50,28 +55,42 @@ static MedAlertDB *msInstance = nil;
     return self;
 }
 
--(BOOL)isValid:(NSString *)userAnd :(NSString *)password
+-(sqlite3_stmt *)query:(NSString *)SQLquery
 {
-    BOOL found = NO;
     const char *dbpath = [mDBPath UTF8String];
-    sqlite3_stmt *statement;
-    
+    sqlite3_stmt *statement = nil;
     if(sqlite3_open(dbpath, &mDB))
     {
-        NSString *SQLquery = [NSString stringWithFormat:@"SELECT name FROM user WHERE login='%@' AND password='%@'", userAnd, password];
         const char *query_stmt = [SQLquery UTF8String];
         
         if(sqlite3_prepare_v2(mDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
-            if(sqlite3_step(statement) == SQLITE_ROW)
-            {
-                found = YES;
-            }
-            sqlite3_finalize(statement);
+            return statement;
         }
-        sqlite3_close(mDB);
     }
     
+    return statement;
+}
+
+-(BOOL)exists:(NSString *)user
+{
+    BOOL found = NO;
+    
+    
+    return found;
+}
+
+-(BOOL)isValid:(NSString *)userAnd :(NSString *)password
+{
+    BOOL found = NO;
+    NSString *SQLquery = [NSString stringWithFormat:@"SELECT name FROM user WHERE login='%@' AND password='%@'", userAnd, password];
+    
+    sqlite3_stmt *statement = [self query:SQLquery];
+    if(statement != nil && sqlite3_step(statement) == SQLITE_ROW)
+    {        found = YES;
+    }
+    sqlite3_finalize(statement);
+    sqlite3_close(mDB);    
     return found;
 }
 

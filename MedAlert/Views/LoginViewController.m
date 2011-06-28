@@ -12,7 +12,6 @@
 
 @implementation LoginViewController
 
-
 @synthesize usernameTextField;
 @synthesize passwordTextField;
 
@@ -21,6 +20,7 @@
 
 @synthesize rememberMeSwitch;
 @synthesize rememberMeLabel;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -89,8 +89,7 @@
 -(IBAction)doneButtonPressed:(id)sender
 {
     if([[MedAlertDB instance] isValid:[usernameTextField text]:[passwordTextField text]] == YES)
-    {
-        UIAlertView *loginCorrect = [[UIAlertView alloc] initWithTitle:@"Login válido." message:@"Você existe!" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    {        UIAlertView *loginCorrect = [[UIAlertView alloc] initWithTitle:@"Login válido." message:@"Você existe!" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [loginCorrect show];
     }
     else

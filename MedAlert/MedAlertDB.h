@@ -20,6 +20,7 @@
 
 +(MedAlertDB *)instance;
 
+-(BOOL)exists:(NSString *)user;
 -(BOOL)isValid:(NSString *)userAnd:(NSString *)password;
 -(void)createEditableCopyOfDatabaseIfNeeded;
 
