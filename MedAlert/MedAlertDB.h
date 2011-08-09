@@ -22,6 +22,7 @@
 
 -(BOOL)exists:(NSString *)user;
 -(BOOL)isValid:(NSString *)userAnd:(NSString *)password;
+-(BOOL)insertUser:(NSString *)nameAnd:(NSString *)loginAnd:(NSString *)password;
 -(void)createEditableCopyOfDatabaseIfNeeded;
 
 @end

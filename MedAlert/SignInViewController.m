@@ -7,6 +7,7 @@
 //
 
 #import "SignInViewController.h"
+#import "MedAlertDB.h"
 
 @interface SignInViewController (hidden)
     -(BOOL)areSignInFieldsOk;
@@ -116,6 +117,12 @@
         alertMsg = @"Senha e senha redigitada não são as mesmas.";
     }
     
+    else if([[MedAlertDB instance] exists:[loginTF text]] == YES)
+    {
+        hasProblem = YES;
+        alertMsg = [NSString stringWithFormat:@"Usuário %@ já existe.", [loginTF text]];
+    }
+    
     if(hasProblem)
     {        
         UIAlertView *error = [[UIAlertView alloc] initWithTitle:alertTitle message:alertMsg delegate:nil 
@@ -131,7 +138,22 @@
 {
     if([self areSignInFieldsOk] == YES)
     {
+        NSString *alertTitle = nil;
+        NSString *alertMsg = nil;
+        if([[MedAlertDB instance] insertUser:[nameTF text]:[loginTF text]:[passwordTF text]] == YES)
+        {
+            alertTitle = @"Sucesso";
+            alertMsg = @"Cadastro realizado com sucesso.";
+        }
+        else
+        {
+            alertTitle = @"Erro";
+            alertMsg = @"Cadastro não pôde ser realizado.";
+        }
         
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle message:alertMsg delegate:nil 
+                                              cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        [alert show];
     }
 }
 

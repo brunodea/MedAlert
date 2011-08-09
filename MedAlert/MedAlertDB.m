@@ -59,7 +59,7 @@ static MedAlertDB *msInstance = nil;
 {
     const char *dbpath = [mDBPath UTF8String];
     sqlite3_stmt *statement = nil;
-    if(sqlite3_open(dbpath, &mDB))
+    if(sqlite3_open(dbpath, &mDB) == SQLITE_OK)
     {
         const char *query_stmt = [SQLquery UTF8String];
         
@@ -75,7 +75,13 @@ static MedAlertDB *msInstance = nil;
 -(BOOL)exists:(NSString *)user
 {
     BOOL found = NO;
+    NSString *SQLquery = [NSString stringWithFormat:@"SELECT name FROM user WHERE login='%@'",user];
     
+    sqlite3_stmt *stmt = [self query:SQLquery];
+    if(stmt != nil && sqlite3_step(stmt) == SQLITE_ROW)
+        found = YES;
+    sqlite3_finalize(stmt);
+    sqlite3_close(mDB);
     
     return found;
 }
@@ -83,15 +89,46 @@ static MedAlertDB *msInstance = nil;
 -(BOOL)isValid:(NSString *)userAnd :(NSString *)password
 {
     BOOL found = NO;
-    NSString *SQLquery = [NSString stringWithFormat:@"SELECT name FROM user WHERE login='%@' AND password='%@'", userAnd, password];
+    NSString *SQLquery = [NSString stringWithFormat:@"SELECT name FROM user WHERE login='%@'", userAnd];
     
     sqlite3_stmt *statement = [self query:SQLquery];
     if(statement != nil && sqlite3_step(statement) == SQLITE_ROW)
-    {        found = YES;
+    {   
+        found = YES;
     }
     sqlite3_finalize(statement);
     sqlite3_close(mDB);    
     return found;
+}
+
+-(BOOL)insertUser:(NSString *)nameAnd :(NSString *)loginAnd :(NSString *)password
+{
+    if([self exists:loginAnd] == YES)
+        return NO;
+    
+    const char *dbpath = [mDBPath UTF8String];
+    if(sqlite3_open(dbpath, &mDB) == SQLITE_OK)
+    {
+        const char *sql = "INSERT INTO user (name,login,password) VALUES(?,?,?)";
+        sqlite3_stmt *st = nil;
+        if(sqlite3_prepare_v2(mDB, sql, -1, &st, NULL) != SQLITE_OK)
+            return NO;
+        sqlite3_bind_text(st, 1, [nameAnd UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(st, 2, [loginAnd UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(st, 3, [password UTF8String], -1, SQLITE_TRANSIENT);
+    
+        if(sqlite3_step(st) != SQLITE_DONE) 
+        {
+            sqlite3_finalize(st);
+            sqlite3_close(mDB);
+            return NO;
+        }
+    
+        sqlite3_finalize(st);
+    }
+    sqlite3_close(mDB);
+    
+    return YES;
 }
 
 -(void)createEditableCopyOfDatabaseIfNeeded 
