@@ -17,12 +17,11 @@
 }
 
 @property (nonatomic, retain) NSString *mDBName;
+@property (nonatomic, readonly) NSString *mDBPath;
+@property (nonatomic, readonly) sqlite3 *mDB;
 
 +(MedAlertDB *)instance;
-
--(BOOL)exists:(NSString *)user;
--(BOOL)isValid:(NSString *)userAnd:(NSString *)password;
--(BOOL)insertUser:(NSString *)nameAnd:(NSString *)loginAnd:(NSString *)password;
+-(sqlite3_stmt *)query:(NSString *)SQLquery;
 -(void)createEditableCopyOfDatabaseIfNeeded;
 
 @end

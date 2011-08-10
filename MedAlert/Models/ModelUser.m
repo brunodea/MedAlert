@@ -11,9 +11,27 @@
 
 @implementation ModelUser
 
-@synthesize mID;
 @synthesize mName;
-@synthesize login;
-@synthesize password;
+@synthesize mLogin;
+@synthesize mRemeberMe;
+
+-(id)init:(NSString *)nameAnd:(NSString *)loginAnd:(BOOL)rememberMe
+{
+    if([self init] != nil)
+    {
+        mName = nameAnd;
+        mLogin = loginAnd;
+        mRemeberMe = rememberMe;
+    }
+    return self;
+}
+
+-(void)dealloc
+{
+    [mName dealloc];
+    [mLogin dealloc];
+    [super dealloc];
+}
+
 
 @end

@@ -10,15 +10,14 @@
 
 
 @interface ModelUser : NSObject {
-    NSInteger mId;
     NSString *mName;
-    NSString *login;
-    NSString *password;
+    NSString *mLogin; //login eh unico.
+    
+    BOOL mRemeberMe;
 }
 
-@property (assign, nonatomic, readonly) NSInteger mID;
 @property (nonatomic, retain) NSString *mName;
-@property (nonatomic, retain) NSString *login;
-@property (nonatomic, retain) NSString *password;
+@property (nonatomic, retain) NSString *mLogin;
+@property (assign, nonatomic) BOOL mRemeberMe;
 
 @end
