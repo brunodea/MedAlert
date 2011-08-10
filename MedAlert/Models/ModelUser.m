@@ -15,7 +15,7 @@
 @synthesize mLogin;
 @synthesize mRemeberMe;
 
--(id)init:(NSString *)nameAnd:(NSString *)loginAnd:(BOOL)rememberMe
+-(id)initWith:(NSString *)nameAnd:(NSString *)loginAnd:(BOOL)rememberMe
 {
     if([self init] != nil)
     {

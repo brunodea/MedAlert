@@ -38,7 +38,8 @@
 -(ModelUser *)isValid:(NSString *)userAnd :(NSString *)password
 {
     ModelUser *user = nil;
-    NSString *SQLquery = [NSString stringWithFormat:@"SELECT name,login FROM user WHERE login='%@'", userAnd, password];
+    NSString *SQLquery = [NSString stringWithFormat:
+                          @"SELECT name,login FROM user WHERE login='%@' AND password='%@'", userAnd, password];
     
     sqlite3_stmt *statement = [mMedAlertDB query:SQLquery];
     if(statement != nil && sqlite3_step(statement) == SQLITE_ROW)
@@ -46,8 +47,7 @@
         NSString *name = [NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 0)];
         NSString *login = [NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 1)];
         
-        [[user mName] initWithString:name];
-        [[user mLogin] initWithString:login];
+        user = [[ModelUser alloc] initWith:name:login:NO];
     }
     sqlite3_finalize(statement);
     sqlite3_close([mMedAlertDB mDB]); 

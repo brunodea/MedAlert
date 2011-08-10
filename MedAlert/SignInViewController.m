@@ -8,6 +8,8 @@
 
 #import "SignInViewController.h"
 #import "MedAlertDB.h"
+#import "UserDAO.h"
+#import "ModelUser.h"
 
 @interface SignInViewController (hidden)
     -(BOOL)areSignInFieldsOk;
@@ -95,14 +97,16 @@
     [super touchesBegan:touches withEvent:event];     
 }
 
-//retorna YES se esta tudo ok.
--(BOOL)areSignInFieldsOk
+-(ModelUser *)createUserFromFields
 {    
     BOOL hasProblem = NO;
     
     NSString *alertTitle = @"Erro no cadastro";
     NSString *alertMsg = nil;
     NSString *alertCancelButtonTitle = @"Ok";
+    
+    UserDAO *udao = [[UserDAO alloc] init];
+    ModelUser *user = [[ModelUser alloc] initWith:[nameTF text]:[loginTF text]:NO];
     
     if([[nameTF text] isEqualToString:@""] || [[loginTF text] isEqualToString:@""] || 
        [[passwordTF text] isEqualToString:@""] || [[password2TF text] isEqualToString:@""])
@@ -117,7 +121,7 @@
         alertMsg = @"Senha e senha redigitada não são as mesmas.";
     }
     
-    else if([[MedAlertDB instance] exists:[loginTF text]] == YES)
+    else if([udao exists:user] == YES)
     {
         hasProblem = YES;
         alertMsg = [NSString stringWithFormat:@"Usuário %@ já existe.", [loginTF text]];
@@ -128,19 +132,23 @@
         UIAlertView *error = [[UIAlertView alloc] initWithTitle:alertTitle message:alertMsg delegate:nil 
                                               cancelButtonTitle:alertCancelButtonTitle otherButtonTitles:nil, nil];
         [error show];
-        return NO;
+        
+        user = nil;
     }
+    [udao release];
     
-    return YES;
+    return user;
 }
 
 -(IBAction)signInButtonPressed:(id)sender
 {
-    if([self areSignInFieldsOk] == YES)
+    ModelUser *user = [self createUserFromFields];
+    if(user != nil)
     {
         NSString *alertTitle = nil;
         NSString *alertMsg = nil;
-        if([[MedAlertDB instance] insertUser:[nameTF text]:[loginTF text]:[passwordTF text]] == YES)
+        UserDAO *udao = [[UserDAO alloc] init];
+        if([udao insert:user:[passwordTF text]] == YES)
         {
             alertTitle = @"Sucesso";
             alertMsg = @"Cadastro realizado com sucesso.";

@@ -20,4 +20,6 @@
 @property (nonatomic, retain) NSString *mLogin;
 @property (assign, nonatomic) BOOL mRemeberMe;
 
+-(id)initWith:(NSString *)nameAnd:(NSString *)loginAnd:(BOOL)rememberMe;
+
 @end

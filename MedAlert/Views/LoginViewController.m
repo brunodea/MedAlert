@@ -8,7 +8,8 @@
 
 #import "LoginViewController.h"
 #import "SignInViewController.h"
-#import "MedAlertDB.h"
+#import "UserDAO.h"
+#import "ModelUser.h"
 
 @implementation LoginViewController
 
@@ -88,7 +89,9 @@
 
 -(IBAction)doneButtonPressed:(id)sender
 {
-    if([[MedAlertDB instance] isValid:[usernameTextField text]:[passwordTextField text]] == YES)
+    UserDAO *udao = [[UserDAO alloc] init];
+    ModelUser *user = [udao isValid:[usernameTextField text]:[passwordTextField text]];
+    if(user != nil)
     {        
         UIAlertView *loginCorrect = [[UIAlertView alloc] initWithTitle:@"Login válido." message:@"Você existe!" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [loginCorrect show];
@@ -98,6 +101,7 @@
         UIAlertView *loginIncorrect = [[UIAlertView alloc] initWithTitle:@"Login inválido." message:@"Login e/ou senha incorretos." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [loginIncorrect show];
     }
+    [udao release];
 }
 
 -(IBAction)signInButtonPressed:(id)sender
