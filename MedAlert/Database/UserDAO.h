@@ -21,5 +21,7 @@
 -(ModelUser *) isValid:(NSString *)loginAnd:(NSString *)password; //verifica se o login e senha estao corretos.
 -(BOOL) insert:(ModelUser *)userWith:(NSString *)password; //insere no BD o usuário user. YES se tudo ok.
 -(BOOL) adjustInfoOf:(ModelUser *)user;
+-(NSString *) passwordOf:(NSString *)login;
+-(BOOL) isToRemember:(NSString *)login;
 
 @end

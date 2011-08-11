@@ -117,4 +117,41 @@
     return YES;
 }
 
+-(NSString *) passwordOf:(NSString *)login
+{
+    NSString *sql = [NSString stringWithFormat:@"SELECT password FROM user WHERE login='%@'", login];
+    
+    NSString *res = @"";
+
+    sqlite3_stmt *statement = [mMedAlertDB query:sql];
+    if(statement != nil && sqlite3_step(statement) == SQLITE_ROW)
+    {
+        NSString *password = [NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 0)];        
+        res = password;
+    }
+    
+    sqlite3_finalize(statement);
+    sqlite3_close([mMedAlertDB mDB]); 
+    
+    return res;
+}
+
+-(BOOL) isToRemember:(NSString *)login
+{
+    BOOL remember = NO;
+    NSString *sql = [NSString stringWithFormat:@"SELECT rememberme FROM user WHERE login='%@'", login];
+    
+    sqlite3_stmt *statement = [mMedAlertDB query:sql];
+    if(statement != nil && sqlite3_step(statement) == SQLITE_ROW)
+    {
+        remember = sqlite3_column_int(statement, 0);
+    }
+    
+    sqlite3_finalize(statement);
+    sqlite3_close([mMedAlertDB mDB]); 
+    
+    
+    return remember;
+}
+
 @end

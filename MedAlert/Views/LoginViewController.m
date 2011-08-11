@@ -22,11 +22,14 @@
 @synthesize rememberMeSwitch;
 @synthesize rememberMeLabel;
 
+@synthesize usernameText;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        usernameText = @"";
     }
     return self;
 }
@@ -74,6 +77,7 @@
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
+    
     return YES;
 }
 
@@ -113,6 +117,14 @@
     siVC.title = @"Cadastro";
     [self.navigationController pushViewController:siVC animated:YES];
     [siVC release];
+}
+
+-(IBAction)usernameFinishedEdition:(id)sender
+{
+    UserDAO *udao = [[UserDAO alloc] init];
+    if([udao isToRemember:usernameTextField.text])
+        passwordTextField.text = [udao passwordOf:usernameTextField.text];
+    [udao release];
 }
 
 @end
