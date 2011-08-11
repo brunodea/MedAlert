@@ -95,6 +95,9 @@
     {        
         UIAlertView *loginCorrect = [[UIAlertView alloc] initWithTitle:@"Login válido." message:@"Você existe!" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [loginCorrect show];
+        
+        user.mRemeberMe = [rememberMeSwitch isOn];
+        [udao adjustInfoOf:user];
     }
     else
     {

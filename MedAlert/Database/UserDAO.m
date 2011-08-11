@@ -64,13 +64,14 @@
     sqlite3 *db = [mMedAlertDB mDB];
     if(sqlite3_open(dbpath, &db) == SQLITE_OK)
     {
-        const char *sql = "INSERT INTO user (name,login,password) VALUES(?,?,?)";
+        const char *sql = "INSERT INTO user (name,login,password,rememberme) VALUES(?,?,?,?)";
         sqlite3_stmt *st = nil;
         if(sqlite3_prepare_v2(db, sql, -1, &st, NULL) != SQLITE_OK)
             return NO;
         sqlite3_bind_text(st, 1, [[userWith mName] UTF8String], -1, SQLITE_TRANSIENT);
         sqlite3_bind_text(st, 2, [[userWith mLogin] UTF8String], -1, SQLITE_TRANSIENT);
         sqlite3_bind_text(st, 3, [password UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int(st, 4, [userWith mRemeberMe]);
         
         if(sqlite3_step(st) != SQLITE_DONE) 
         {
@@ -82,6 +83,37 @@
         sqlite3_finalize(st);
     }
     sqlite3_close(db);
+    
+    return YES;
+}
+
+-(BOOL) adjustInfoOf:(ModelUser *)user
+{
+    if([self exists:user] == NO)
+        return NO;
+    NSLog(@"gehehe");
+    
+    const char *dbpath = [[mMedAlertDB mDBPath] UTF8String];
+    sqlite3 *db = [mMedAlertDB mDB];
+    if(sqlite3_open(dbpath, &db) == SQLITE_OK)
+    {
+        const char *sql = [[NSString stringWithFormat:@"UPDATE user SET name='%@', rememberme=%d WHERE login='%@'",[user mName],[user mRemeberMe], [user mLogin]] UTF8String];
+        sqlite3_stmt *st = nil;
+        if(sqlite3_prepare_v2(db, sql, -1, &st, NULL) != SQLITE_OK)
+            return NO;
+        
+        if(sqlite3_step(st) != SQLITE_DONE) 
+        {
+            sqlite3_finalize(st);
+            sqlite3_close(db);
+            return NO;
+        }
+        
+        sqlite3_finalize(st);
+    }
+    sqlite3_close(db);
+
+    
     
     return YES;
 }

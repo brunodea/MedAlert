@@ -20,5 +20,6 @@
 -(BOOL) exists:(ModelUser *)user; //verifica se o login do usuario existe no banco de dados.
 -(ModelUser *) isValid:(NSString *)loginAnd:(NSString *)password; //verifica se o login e senha estao corretos.
 -(BOOL) insert:(ModelUser *)userWith:(NSString *)password; //insere no BD o usuário user. YES se tudo ok.
+-(BOOL) adjustInfoOf:(ModelUser *)user;
 
 @end

@@ -82,8 +82,9 @@ static MedAlertDB *msInstance = nil;
     mDBPath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent:mDBName]];
     
     NSFileManager *filemgr = [NSFileManager defaultManager];
+    //[filemgr removeItemAtPath:mDBPath error:nil];
     
-    if([filemgr fileExistsAtPath: mDBPath ] == NO)
+    if([filemgr fileExistsAtPath: mDBPath] == NO)
     {
         NSLog(@"arquivo do BD nao encontrado.");
         const char *dbpath = [mDBPath UTF8String];
@@ -92,7 +93,7 @@ static MedAlertDB *msInstance = nil;
         {
             NSLog(@"BD aberto com sucesso");
             char *errMsg;
-            const char *sql_stmt = "CREATE TABLE IF NOT EXISTS user(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, login TEXT, password TEXT)";
+            const char *sql_stmt = "CREATE TABLE IF NOT EXISTS user(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, login TEXT, password TEXT, rememberme BOOLEAN)";
             
             if(sqlite3_exec(mDB, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK)
             {
