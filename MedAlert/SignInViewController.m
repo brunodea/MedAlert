@@ -7,6 +7,7 @@
 //
 
 #import "SignInViewController.h"
+#import "LoginViewController.h"
 #import "MedAlertDB.h"
 #import "UserDAO.h"
 #import "ModelUser.h"
@@ -148,7 +149,9 @@
         NSString *alertTitle = nil;
         NSString *alertMsg = nil;
         UserDAO *udao = [[UserDAO alloc] init];
-        if([udao insert:user:[passwordTF text]] == YES)
+        
+        BOOL userInserted = [udao insert:user:[passwordTF text]];
+        if(userInserted == YES)
         {
             alertTitle = @"Sucesso";
             alertMsg = @"Cadastro realizado com sucesso.";
@@ -157,11 +160,20 @@
         {
             alertTitle = @"Erro";
             alertMsg = @"Cadastro não pôde ser realizado.";
+                        
+            [user release];
         }
+        [udao release];
+
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle message:alertMsg delegate:nil 
                                               cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [alert show];
+        
+        if(userInserted == YES)
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
     }
 }
 

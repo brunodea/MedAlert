@@ -91,7 +91,6 @@
 {
     if([self exists:user] == NO)
         return NO;
-    NSLog(@"gehehe");
     
     const char *dbpath = [[mMedAlertDB mDBPath] UTF8String];
     sqlite3 *db = [mMedAlertDB mDB];
