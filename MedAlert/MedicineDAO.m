@@ -13,4 +13,15 @@
 
 @synthesize mMedAlertDB;
 
+-(id)init
+{
+    [super init];
+    if(self != nil)
+    {
+        mMedAlertDB = [MedAlertDB instance];
+    }
+    
+    return self;
+}
+
 @end
