@@ -68,6 +68,30 @@ static MedAlertDB *msInstance = nil;
     return statement;
 }
 
+-(void)exec:(NSString *)sql
+{
+    const char *dbpath = [mDBPath UTF8String];
+    
+    if(sqlite3_open(dbpath, &mDB) == SQLITE_OK)
+    {
+        NSLog(@"BD aberto com sucesso");
+        char *errMsg;
+        const char *sql_stmt = [sql UTF8String];
+        
+        if(sqlite3_exec(mDB, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK)
+        {
+            NSLog(@"Comando SQL não pôde ser executado.");
+        }
+        else
+            NSLog(@"Comando SQL executado com sucesso");
+        
+        sqlite3_close(mDB);
+        
+    } else {
+        NSLog(@"Failed to open/create database");
+    }
+}
+
 -(void)createEditableCopyOfDatabaseIfNeeded 
 {
     NSString *docsDir;
@@ -82,33 +106,22 @@ static MedAlertDB *msInstance = nil;
     mDBPath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent:mDBName]];
     
     NSFileManager *filemgr = [NSFileManager defaultManager];
-    //[filemgr removeItemAtPath:mDBPath error:nil];
+//    [filemgr removeItemAtPath:mDBPath error:nil];
     
     if([filemgr fileExistsAtPath: mDBPath] == NO)
     {
-        NSLog(@"arquivo do BD nao encontrado.");
-        const char *dbpath = [mDBPath UTF8String];
-        
-        if(sqlite3_open(dbpath, &mDB) == SQLITE_OK)
-        {
-            NSLog(@"BD aberto com sucesso");
-            char *errMsg;
-            const char *sql_stmt = "CREATE TABLE IF NOT EXISTS user(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, login TEXT, password TEXT, rememberme BOOLEAN)";
-            
-            if(sqlite3_exec(mDB, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK)
-            {
-                NSLog(@"Failed to create table");
-                //status.text = ;
-            }
-            else
-                NSLog(@"Tabela criada com sucesso");
-            
-            sqlite3_close(mDB);
-            
-        } else {
-            NSLog(@"Failed to open/create database");
-            //status.text = @"Failed to open/create database";
-        }
+        [self exec:@"CREATE TABLE IF NOT EXISTS user(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, login TEXT, password TEXT, rememberme BOOLEAN)"];
+        [self exec:@"CREATE TABLE IF NOT EXISTS medicine(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)"];
+        [self exec:@"CREATE TABLE IF NOT EXISTS alarm_note(id INTEGER PRIMARY KEY AUTOINCREMENT, note TEXT)"];
+        [self exec:@"CREATE TABLE IF NOT EXISTS alarm(id INTEGER PRIMARY KEY AUTOINCREMENT, is_active BOOLEAN, created_on TEXT, \
+                    inits_on TEXT, type INTEGER, days INTEGER, \
+                    id_user INTEGER, id_medicine INTEGER, id_alarm_note INTEGER, \
+                    FOREIGN KEY(id_user) REFERENCES user(id), FOREIGN KEY(id_medicine) REFERENCES medicine(id), \
+                    FOREIGN KEY(id_alarm_note) REFERENCES alarm_note(id))"];
+        [self exec:@"CREATE TABLE IF NOT EXISTS periodic_alarm(id INTEGER PRIMARY KEY AUTOINCREMENT, alert_interval TIMESTAMP, id_alarm INTEGER, \
+                     FOREIGN KEY(id_alarm) REFERENCES alarm(id))"];
+        [self exec:@"CREATE TABLE IF NOT EXISTS static_alarm(id INTEGER PRIMARY KEY AUTOINCREMENT, time TEXT, id_alarm INTEGER, \
+                     FOREIGN KEY(id_alarm) REFERENCES alarm(id))"];
     }
     [filemgr release];
 }

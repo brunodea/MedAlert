@@ -111,8 +111,6 @@
         sqlite3_finalize(st);
     }
     sqlite3_close(db);
-
-    
     
     return YES;
 }
