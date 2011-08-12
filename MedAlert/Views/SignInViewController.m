@@ -8,6 +8,7 @@
 
 #import "SignInViewController.h"
 #import "LoginViewController.h"
+#import "ProfileViewController.h"
 #import "MedAlertDB.h"
 #import "UserDAO.h"
 #import "ModelUser.h"
@@ -107,7 +108,6 @@
     NSString *alertCancelButtonTitle = @"Ok";
     
     UserDAO *udao = [[UserDAO alloc] init];
-    ModelUser *user = [[ModelUser alloc] initWith:[nameTF text]:[loginTF text]:NO];
     
     if([[nameTF text] isEqualToString:@""] || [[loginTF text] isEqualToString:@""] || 
        [[passwordTF text] isEqualToString:@""] || [[password2TF text] isEqualToString:@""])
@@ -122,20 +122,21 @@
         alertMsg = @"Senha e senha redigitada não são as mesmas.";
     }
     
-    else if([udao exists:user] == YES)
+    else if([udao loginExists:[loginTF text]] == YES)
     {
         hasProblem = YES;
         alertMsg = [NSString stringWithFormat:@"Usuário %@ já existe.", [loginTF text]];
     }
     
+     ModelUser *user = nil;
     if(hasProblem)
     {        
         UIAlertView *error = [[UIAlertView alloc] initWithTitle:alertTitle message:alertMsg delegate:nil 
                                               cancelButtonTitle:alertCancelButtonTitle otherButtonTitles:nil, nil];
         [error show];
-        
-        user = nil;
     }
+    else
+       user = [[[ModelUser alloc] initWithName:[nameTF text] login:[loginTF text] andRemember:NO] autorelease];
     [udao release];
     
     return user;
@@ -150,7 +151,7 @@
         NSString *alertMsg = nil;
         UserDAO *udao = [[UserDAO alloc] init];
         
-        BOOL userInserted = [udao insert:user:[passwordTF text]];
+        BOOL userInserted = [udao insertUser:user withPassword:[passwordTF text]];
         if(userInserted == YES)
         {
             alertTitle = @"Sucesso";

@@ -10,7 +10,9 @@
 
 
 @interface ProfileViewController : UIViewController {
-    
+    IBOutlet UITableView *mTableView;
 }
+
+@property (nonatomic, retain) IBOutlet UITableView *mTableView;
 
 @end

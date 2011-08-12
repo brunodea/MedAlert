@@ -21,10 +21,10 @@
     return self;
 }
 
--(BOOL) exists:(ModelUser *)user
+-(BOOL) loginExists:(NSString *)login
 {
     BOOL found = NO;
-    NSString *SQLquery = [NSString stringWithFormat:@"SELECT name FROM user WHERE login='%@'",[user mLogin]];
+    NSString *SQLquery = [NSString stringWithFormat:@"SELECT name FROM user WHERE login='%@'", login];
     
     sqlite3_stmt *stmt = [mMedAlertDB query:SQLquery];
     if(stmt != nil && sqlite3_step(stmt) == SQLITE_ROW)
@@ -35,19 +35,23 @@
     return found;
 }
 
--(ModelUser *)isValid:(NSString *)userAnd :(NSString *)password
+-(ModelUser *) userWithLogin:(NSString *)login
+               andPassword:(NSString *)password
 {
     ModelUser *user = nil;
     NSString *SQLquery = [NSString stringWithFormat:
-                          @"SELECT name,login FROM user WHERE login='%@' AND password='%@'", userAnd, password];
+                          @"SELECT name,login,rememberme,id FROM user WHERE login='%@' AND password='%@'", login, password];
     
     sqlite3_stmt *statement = [mMedAlertDB query:SQLquery];
     if(statement != nil && sqlite3_step(statement) == SQLITE_ROW)
     {
         NSString *name = [NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 0)];
         NSString *login = [NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 1)];
+        BOOL rememberme = (BOOL)sqlite3_column_int(statement, 2);
+        int id = (int)sqlite3_column_int(statement, 3);
         
-        user = [[ModelUser alloc] initWith:name:login:NO];
+        user = [[[ModelUser alloc] initWithName:name login:login andRemember:rememberme] autorelease];
+        user.mID = id;
     }
     sqlite3_finalize(statement);
     sqlite3_close([mMedAlertDB mDB]); 
@@ -55,9 +59,10 @@
     return user;
 }
 
--(BOOL)insert:(ModelUser *)userWith:(NSString *)password
+-(BOOL) insertUser:(ModelUser *)user
+      withPassword:(NSString *)password
 {
-    if([self exists:userWith] == YES)
+    if([self loginExists:user.mLogin] == YES)
         return NO;
     
     const char *dbpath = [[mMedAlertDB mDBPath] UTF8String];
@@ -68,10 +73,10 @@
         sqlite3_stmt *st = nil;
         if(sqlite3_prepare_v2(db, sql, -1, &st, NULL) != SQLITE_OK)
             return NO;
-        sqlite3_bind_text(st, 1, [[userWith mName] UTF8String], -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(st, 2, [[userWith mLogin] UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(st, 1, [[user mName] UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(st, 2, [[user mLogin] UTF8String], -1, SQLITE_TRANSIENT);
         sqlite3_bind_text(st, 3, [password UTF8String], -1, SQLITE_TRANSIENT);
-        sqlite3_bind_int(st, 4, [userWith mRemeberMe]);
+        sqlite3_bind_int(st, 4, [user mRemeberMe]);
         
         if(sqlite3_step(st) != SQLITE_DONE) 
         {
@@ -87,16 +92,16 @@
     return YES;
 }
 
--(BOOL) adjustInfoOf:(ModelUser *)user
+-(BOOL) adjustInfoOfUser:(ModelUser *)user
 {
-    if([self exists:user] == NO)
+    if([self loginExists:user.mLogin] == NO)
         return NO;
     
     const char *dbpath = [[mMedAlertDB mDBPath] UTF8String];
     sqlite3 *db = [mMedAlertDB mDB];
     if(sqlite3_open(dbpath, &db) == SQLITE_OK)
     {
-        const char *sql = [[NSString stringWithFormat:@"UPDATE user SET name='%@', rememberme=%d WHERE login='%@'",[user mName],[user mRemeberMe], [user mLogin]] UTF8String];
+        const char *sql = [[NSString stringWithFormat:@"UPDATE user SET name='%@', rememberme=%d WHERE login='%@' AND id=%d",[user mName],[user mRemeberMe], [user mLogin], [user mID]] UTF8String];
         sqlite3_stmt *st = nil;
         if(sqlite3_prepare_v2(db, sql, -1, &st, NULL) != SQLITE_OK)
             return NO;
@@ -115,7 +120,7 @@
     return YES;
 }
 
--(NSString *) passwordOf:(NSString *)login
+-(NSString *) passwordOfLogin:(NSString *)login
 {
     NSString *sql = [NSString stringWithFormat:@"SELECT password FROM user WHERE login='%@'", login];
     
@@ -134,7 +139,7 @@
     return res;
 }
 
--(BOOL) isToRemember:(NSString *)login
+-(BOOL) rememberThePasswordOfLogin:(NSString *)login
 {
     BOOL remember = NO;
     NSString *sql = [NSString stringWithFormat:@"SELECT rememberme FROM user WHERE login='%@'", login];

@@ -14,14 +14,18 @@
 @synthesize mName;
 @synthesize mLogin;
 @synthesize mRemeberMe;
+@synthesize mID;
 
--(id)initWith:(NSString *)nameAnd:(NSString *)loginAnd:(BOOL)rememberMe
+-(id)initWithName:(NSString *)name
+         login:(NSString *)login
+      andRemember:(BOOL)remember
 {
     if([self init] != nil)
     {
-        mName = nameAnd;
-        mLogin = loginAnd;
-        mRemeberMe = rememberMe;
+        mName = name;
+        mLogin = login;
+        mRemeberMe = remember;
+        mID = -1;
     }
     return self;
 }

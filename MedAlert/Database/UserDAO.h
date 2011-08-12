@@ -17,11 +17,14 @@
 
 @property (nonatomic, retain) MedAlertDB *mMedAlertDB;
 
--(BOOL) exists:(ModelUser *)user; //verifica se o login do usuario existe no banco de dados.
--(ModelUser *) isValid:(NSString *)loginAnd:(NSString *)password; //verifica se o login e senha estao corretos.
--(BOOL) insert:(ModelUser *)userWith:(NSString *)password; //insere no BD o usuário user. YES se tudo ok.
--(BOOL) adjustInfoOf:(ModelUser *)user;
--(NSString *) passwordOf:(NSString *)login;
--(BOOL) isToRemember:(NSString *)login;
+-(BOOL) loginExists:(NSString *)login; //verifica se o login do usuario existe no banco de dados.
+-(ModelUser *) userWithLogin:(NSString *)login
+               andPassword:(NSString *)password; //retorna ModelUser de acordo com seu login e password. Nil se não existir.
+-(BOOL) insertUser:(ModelUser *)user
+      withPassword:(NSString *)password; //insere no BD o usuário user. YES se tudo ok.
+
+-(BOOL) adjustInfoOfUser:(ModelUser *)user;
+-(NSString *) passwordOfLogin:(NSString *)login;
+-(BOOL) rememberThePasswordOfLogin:(NSString *)login;
 
 @end

@@ -19,7 +19,6 @@
     IBOutlet UISwitch *rememberMeSwitch;
     IBOutlet UILabel *rememberMeLabel;
     
-    NSString *usernameText;
 }
 
 @property (nonatomic, retain) IBOutlet UITextField *usernameTextField;
@@ -30,8 +29,6 @@
 
 @property (nonatomic, retain) IBOutlet UISwitch *rememberMeSwitch;
 @property (nonatomic, retain) IBOutlet UILabel *rememberMeLabel;
-
-@property (nonatomic, retain) NSString *usernameText;
 
 -(IBAction)doneButtonPressed:(id)sender;
 -(IBAction)signInButtonPressed:(id)sender;

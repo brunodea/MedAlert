@@ -8,6 +8,7 @@
 
 #import "LoginViewController.h"
 #import "SignInViewController.h"
+#import "ProfileViewController.h"
 #import "UserDAO.h"
 #import "ModelUser.h"
 
@@ -22,14 +23,11 @@
 @synthesize rememberMeSwitch;
 @synthesize rememberMeLabel;
 
-@synthesize usernameText;
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        usernameText = @"";
     }
     return self;
 }
@@ -94,14 +92,18 @@
 -(IBAction)doneButtonPressed:(id)sender
 {
     UserDAO *udao = [[UserDAO alloc] init];
-    ModelUser *user = [udao isValid:[usernameTextField text]:[passwordTextField text]];
+    ModelUser *user = [udao userWithLogin:[usernameTextField text] andPassword:[passwordTextField text]];
     if(user != nil)
     {        
-        UIAlertView *loginCorrect = [[UIAlertView alloc] initWithTitle:@"Login válido." message:@"Você existe!" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-        [loginCorrect show];
+//        UIAlertView *loginCorrect = [[UIAlertView alloc] initWithTitle:@"Login válido." message:@"Você existe!" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+//        [loginCorrect show];
         
         user.mRemeberMe = [rememberMeSwitch isOn];
-        [udao adjustInfoOf:user];
+        [udao adjustInfoOfUser:user];
+        ProfileViewController *pvc = [[ProfileViewController alloc] init];
+        pvc.title = @"Profile";
+        [self.navigationController pushViewController:pvc animated:YES];
+        [pvc release];
     }
     else
     {
@@ -122,8 +124,8 @@
 -(IBAction)usernameFinishedEdition:(id)sender
 {
     UserDAO *udao = [[UserDAO alloc] init];
-    if([udao isToRemember:usernameTextField.text])
-        passwordTextField.text = [udao passwordOf:usernameTextField.text];
+    if([udao rememberThePasswordOfLogin:[usernameTextField text]])
+        passwordTextField.text = [udao passwordOfLogin:[usernameTextField text]];
     [udao release];
 }
 
