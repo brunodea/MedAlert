@@ -13,10 +13,10 @@
 
 @interface ProfileTableViewController : UITableViewController {
     ModelUser *mUser;
-    NSArray *mMedicineArray;
+    NSMutableArray *mMedicineArray;
 }
 
 @property (nonatomic, retain) ModelUser *mUser;
-@property (nonatomic, retain) NSArray *mMedicineArray;
+@property (nonatomic, retain) NSMutableArray *mMedicineArray;
 
 @end

@@ -105,6 +105,10 @@
         pvc.mUser = user;
         [self.navigationController pushViewController:pvc animated:YES];
         [pvc release];
+        
+        self.usernameTextField.text = @"";
+        self.passwordTextField.text = @"";
+        [self.rememberMeSwitch setOn:NO];
     }
     else
     {

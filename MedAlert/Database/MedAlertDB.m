@@ -106,7 +106,7 @@ static MedAlertDB *msInstance = nil;
     mDBPath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent:mDBName]];
     
     NSFileManager *filemgr = [NSFileManager defaultManager];
-    [filemgr removeItemAtPath:mDBPath error:nil];
+    //[filemgr removeItemAtPath:mDBPath error:nil];
     
     if([filemgr fileExistsAtPath: mDBPath] == NO)
     {

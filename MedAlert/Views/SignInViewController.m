@@ -151,7 +151,7 @@
         NSString *alertMsg = nil;
         UserDAO *udao = [[UserDAO alloc] init];
         
-        BOOL userInserted = YES;//[udao insertUser:user withPassword:[passwordTF text]];
+        BOOL userInserted = [udao insertUser:user withPassword:[passwordTF text]];
         if(userInserted == YES)
         {
             alertTitle = @"Sucesso";
@@ -164,8 +164,7 @@
                         
             [user release];
         }
-        [udao release];        
-
+        [udao release];
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle message:alertMsg delegate:nil 
                                               cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
