@@ -7,15 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <sqlite3.h>
-#import "MedAlertDB.h"
+#import "DAO.h"
 #import "ModelUser.h"
 
-@interface UserDAO : NSObject {
-    MedAlertDB *mMedAlertDB;
+@interface UserDAO : DAO {
 }
-
-@property (nonatomic, retain) MedAlertDB *mMedAlertDB;
 
 -(BOOL) loginExists:(NSString *)login; //verifica se o login do usuario existe no banco de dados.
 -(ModelUser *) userWithLogin:(NSString *)login
@@ -26,5 +22,6 @@
 -(BOOL) adjustInfoOfUser:(ModelUser *)user;
 -(NSString *) passwordOfLogin:(NSString *)login;
 -(BOOL) rememberThePasswordOfLogin:(NSString *)login;
+-(ModelUser *) userFromID:(int)id_;
 
 @end

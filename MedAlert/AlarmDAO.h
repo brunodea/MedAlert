@@ -1,5 +1,5 @@
 //
-//  ModelMedicine.h
+//  AlarmDAO.h
 //  MedAlert
 //
 //  Created by Bruno Romero de Azevedo on 12/08/11.
@@ -7,12 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Model.h"
+#import "DAO.h"
+#import "ModelAlarm.h"
 
-@interface ModelMedicine : Model {
-    NSString *mName;
+@interface AlarmDAO : DAO {
 }
 
-@property (nonatomic, retain) NSString *mName;
+-(BOOL) insertAlarm:(ModelAlarm *)alarm;
+-(ModelAlarm *) alarmFromID:(int)id_;
 
 @end

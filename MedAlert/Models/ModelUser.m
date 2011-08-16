@@ -14,7 +14,6 @@
 @synthesize mName;
 @synthesize mLogin;
 @synthesize mRemeberMe;
-@synthesize mID;
 
 -(id)initWithName:(NSString *)name
          login:(NSString *)login

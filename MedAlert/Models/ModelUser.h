@@ -7,20 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Model.h"
 
 
-@interface ModelUser : NSObject {
+@interface ModelUser : Model {
     NSString *mName;
     NSString *mLogin; //login eh unico.
     
     BOOL mRemeberMe;
-    int mID;
 }
 
 @property (nonatomic, retain) NSString *mName;
 @property (nonatomic, retain) NSString *mLogin;
 @property (assign, nonatomic) BOOL mRemeberMe;
-@property (assign, nonatomic) int mID;
 
 -(id)initWithName:(NSString *)name
          login:(NSString *)login

@@ -1,5 +1,5 @@
 //
-//  ModelMedicine.h
+//  AlarmNote.h
 //  MedAlert
 //
 //  Created by Bruno Romero de Azevedo on 12/08/11.
@@ -9,10 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "Model.h"
 
-@interface ModelMedicine : Model {
-    NSString *mName;
+
+@interface AlarmNote : Model {
+    NSString *mNote;
 }
 
-@property (nonatomic, retain) NSString *mName;
+@property (nonatomic, retain) NSString *mNote;
 
 @end

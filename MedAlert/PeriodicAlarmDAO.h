@@ -1,16 +1,16 @@
 //
-//  ModelMedicine.m
+//  PeriodicAlarmDAO.h
 //  MedAlert
 //
 //  Created by Bruno Romero de Azevedo on 12/08/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "ModelMedicine.h"
+#import <Foundation/Foundation.h>
+#import "DAO.h"
 
-
-@implementation ModelMedicine
-
-@synthesize mName;
+@interface PeriodicAlarmDAO : DAO {
+    
+}
 
 @end

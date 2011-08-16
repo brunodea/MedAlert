@@ -11,8 +11,6 @@
 
 @implementation UserDAO
 
-@synthesize mMedAlertDB;
-
 -(id) init
 {
     self = [super init];
@@ -48,10 +46,10 @@
         NSString *name = [NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 0)];
         NSString *login = [NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 1)];
         BOOL rememberme = (BOOL)sqlite3_column_int(statement, 2);
-        int id = (int)sqlite3_column_int(statement, 3);
+        int id_ = (int)sqlite3_column_int(statement, 3);
         
         user = [[[ModelUser alloc] initWithName:name login:login andRemember:rememberme] autorelease];
-        user.mID = id;
+        user.mID = id_;
     }
     sqlite3_finalize(statement);
     sqlite3_close([mMedAlertDB mDB]); 
@@ -155,6 +153,28 @@
     
     
     return remember;
+}
+
+-(ModelUser *)userFromID:(int)id_
+{
+    ModelUser *user = nil;
+    NSString *SQLquery = [NSString stringWithFormat:
+                          @"SELECT name,login,rememberme FROM user WHERE id=%d", id_];
+    
+    sqlite3_stmt *statement = [mMedAlertDB query:SQLquery];
+    if(statement != nil && sqlite3_step(statement) == SQLITE_ROW)
+    {
+        NSString *name = [NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 0)];
+        NSString *login = [NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 1)];
+        BOOL rememberme = (BOOL)sqlite3_column_int(statement, 2);
+        
+        user = [[[ModelUser alloc] initWithName:name login:login andRemember:rememberme] autorelease];
+        user.mID = id_;
+    }
+    sqlite3_finalize(statement);
+    sqlite3_close([mMedAlertDB mDB]); 
+    
+    return user;
 }
 
 @end

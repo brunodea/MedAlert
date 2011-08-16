@@ -7,12 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MedAlertDB.h"
+#import "DAO.h"
+#import "ModelUser.h"
+#import "ModelAlarm.h"
 
-@interface MedicineDAO : NSObject {
-    MedAlertDB *mMedAlertDB;
+@interface MedicineDAO : DAO {
 }
 
-@property (nonatomic, retain) MedAlertDB *mMedAlertDB;
+-(NSMutableArray *) medicinesOfUser:(int)user_id;
+-(NSMutableArray *) medicinesOfAlarm:(int)alarm_id;
 
 @end

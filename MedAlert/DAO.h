@@ -1,5 +1,5 @@
 //
-//  ModelMedicine.h
+//  DAO.h
 //  MedAlert
 //
 //  Created by Bruno Romero de Azevedo on 12/08/11.
@@ -7,12 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Model.h"
+#import <sqlite3.h>
+#import "MedAlertDB.h"
 
-@interface ModelMedicine : Model {
-    NSString *mName;
+
+@interface DAO : NSObject {
+    MedAlertDB *mMedAlertDB;
 }
 
-@property (nonatomic, retain) NSString *mName;
+@property (nonatomic, retain) MedAlertDB *mMedAlertDB;
 
 @end

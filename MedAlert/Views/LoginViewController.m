@@ -8,7 +8,7 @@
 
 #import "LoginViewController.h"
 #import "SignInViewController.h"
-#import "ProfileViewController.h"
+#import "ProfileTableViewController.h"
 #import "UserDAO.h"
 #import "ModelUser.h"
 
@@ -100,8 +100,9 @@
         
         user.mRemeberMe = [rememberMeSwitch isOn];
         [udao adjustInfoOfUser:user];
-        ProfileViewController *pvc = [[ProfileViewController alloc] init];
+        ProfileTableViewController *pvc = [[ProfileTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
         pvc.title = @"Profile";
+        pvc.mUser = user;
         [self.navigationController pushViewController:pvc animated:YES];
         [pvc release];
     }
@@ -125,7 +126,10 @@
 {
     UserDAO *udao = [[UserDAO alloc] init];
     if([udao rememberThePasswordOfLogin:[usernameTextField text]])
+    {
         passwordTextField.text = [udao passwordOfLogin:[usernameTextField text]];
+        [rememberMeSwitch setOn:YES animated:YES];
+    }
     [udao release];
 }
 

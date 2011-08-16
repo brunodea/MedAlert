@@ -8,7 +8,7 @@
 
 #import "SignInViewController.h"
 #import "LoginViewController.h"
-#import "ProfileViewController.h"
+#import "ProfileTableViewController.h"
 #import "MedAlertDB.h"
 #import "UserDAO.h"
 #import "ModelUser.h"
@@ -129,14 +129,14 @@
     }
     
      ModelUser *user = nil;
-    if(hasProblem)
+    if(hasProblem == YES)
     {        
         UIAlertView *error = [[UIAlertView alloc] initWithTitle:alertTitle message:alertMsg delegate:nil 
                                               cancelButtonTitle:alertCancelButtonTitle otherButtonTitles:nil, nil];
         [error show];
     }
     else
-       user = [[[ModelUser alloc] initWithName:[nameTF text] login:[loginTF text] andRemember:NO] autorelease];
+        user = [[ModelUser alloc] initWithName:[nameTF text] login:[loginTF text] andRemember:NO];
     [udao release];
     
     return user;
@@ -151,7 +151,7 @@
         NSString *alertMsg = nil;
         UserDAO *udao = [[UserDAO alloc] init];
         
-        BOOL userInserted = [udao insertUser:user withPassword:[passwordTF text]];
+        BOOL userInserted = YES;//[udao insertUser:user withPassword:[passwordTF text]];
         if(userInserted == YES)
         {
             alertTitle = @"Sucesso";
@@ -164,7 +164,7 @@
                         
             [user release];
         }
-        [udao release];
+        [udao release];        
 
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle message:alertMsg delegate:nil 

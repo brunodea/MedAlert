@@ -1,16 +1,16 @@
 //
-//  ModelMedicine.m
+//  DAO.m
 //  MedAlert
 //
 //  Created by Bruno Romero de Azevedo on 12/08/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "ModelMedicine.h"
+#import "DAO.h"
 
 
-@implementation ModelMedicine
+@implementation DAO
 
-@synthesize mName;
+@synthesize mMedAlertDB;
 
 @end
