@@ -7,15 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "ModelUser.h"
 
 @interface MedConfViewController : UIViewController {
-    IBOutlet UITextField *mMedName;
+    IBOutlet UITextField *mMedNameTextField;
     IBOutlet UIButton *mDoneButton;
+    
+    ModelUser *mUser;
 }
 
-@property (nonatomic, retain) IBOutlet UITextField *mMedName;
+@property (nonatomic, retain) IBOutlet UITextField *mMedNameTextField;
 @property (nonatomic, retain) IBOutlet UIButton *mDoneButton;
+@property (nonatomic, retain) ModelUser *mUser;
 
 -(IBAction)doneButtonClicked:(id)sender;
 

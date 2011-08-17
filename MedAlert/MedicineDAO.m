@@ -24,35 +24,24 @@
 
 -(NSMutableArray *)medicinesOfUser:(int)user_id
 {
-    NSMutableArray *res = [[[NSArray alloc] init] autorelease];
-    NSString *sql = [NSString stringWithFormat:@"SELECT medicine_id FROM medicine_user WHERE user_id=%d",user_id];
+    NSMutableArray *res = [[[NSMutableArray alloc] init] autorelease];
+    NSString *sql = [NSString stringWithFormat:@"SELECT medicine.name, medicine.id FROM medicine \
+                                                 WHERE medicine.id = %d",user_id];
     sqlite3_stmt *st = [mMedAlertDB query:sql];
-    NSMutableArray *medicines_id = [NSMutableArray array];
-    while(st != nil && sqlite3_step(st) == SQLITE_ROW)
+    
+    while(sqlite3_step(st) == SQLITE_ROW)
     {
-        NSNumber *mid = [[NSNumber alloc] initWithInt:(int)sqlite3_column_int(st, 0)];
-        [medicines_id addObject:mid];
-        [mid release];
+        NSString *name = [NSString stringWithUTF8String:(char *)sqlite3_column_text(st, 0)];
+        NSInteger mid = (NSInteger)sqlite3_column_int(st, 1);
+        
+        ModelMedicine *medicine = [[ModelMedicine alloc] init];
+        medicine.mName = name;
+        medicine.mID = mid;
+        
+        [res addObject:(ModelMedicine *)medicine];
+        [medicine release];
     }
     sqlite3_finalize(st);
-    
-    NSUInteger size = [medicines_id count];
-    for(NSUInteger i = 0; i < size; i++)
-    {
-        NSInteger v = (NSInteger)[medicines_id objectAtIndex:i];
-        NSString *s = [NSString stringWithFormat:@"SELECT name FROM medicine WHERE id=%d",v];
-        st = [mMedAlertDB query:s];
-        if(sqlite3_step(st) == SQLITE_ROW)
-        {
-            NSString *name = [NSString stringWithUTF8String:(char *)sqlite3_column_text(st, 0)];
-            ModelMedicine *medicine = [[ModelMedicine alloc] init];
-            medicine.mName = name;
-            medicine.mID = v;
-            [res addObject:medicine];
-            [medicine release];
-        }
-        sqlite3_finalize(st);
-    }
     sqlite3_close([mMedAlertDB mDB]);
     
     return res;
@@ -62,34 +51,21 @@
 {
     NSMutableArray *res = [NSMutableArray array];
     
-    NSString *sql = [NSString stringWithFormat:@"SELECT medicine_id FROM alarm_medicine WHERE alarm_id=%d",alarm_id];
-    NSMutableArray *medicines_id = [NSMutableArray array];
+    NSString *sql = [NSString stringWithFormat:@"SELECT medicine.name,medicine.id FROM medicine,alarm_medicine\
+                                                 WHERE alarm_medicine.alarm_id=%d AND medicine.id = alarm_medicine.medicine_id",alarm_id];
     sqlite3_stmt *st = [mMedAlertDB query:sql];
     while(st != nil && sqlite3_step(st) == SQLITE_ROW)
     {
-        NSNumber *mid = [[NSNumber alloc] initWithInt:(int)sqlite3_column_int(st, 0)];
-        [medicines_id addObject:mid];
-        [mid release];
+        NSString *name = [NSString stringWithUTF8String:(char *)sqlite3_column_text(st, 0)];
+        NSInteger mid = (NSInteger)sqlite3_column_int(st, 1);
+        
+        ModelMedicine *medicine = [[ModelMedicine alloc] init];
+        medicine.mName = name;
+        medicine.mID = mid;
+        [res addObject:medicine];
+        [medicine release];
     }
     sqlite3_finalize(st);
-    
-    NSUInteger size = [medicines_id count];
-    for(NSUInteger i = 0; i < size; i++)
-    {
-        NSInteger v = (NSInteger)[medicines_id objectAtIndex:i];
-        NSString *s = [NSString stringWithFormat:@"SELECT name FROM medicine WHERE id=%d",v];
-        st = [mMedAlertDB query:s];
-        if(sqlite3_step(st) == SQLITE_ROW)
-        {
-            NSString *name = [NSString stringWithUTF8String:(char *)sqlite3_column_text(st, 0)];
-            ModelMedicine *medicine = [[ModelMedicine alloc] init];
-            medicine.mName = name;
-            medicine.mID = v;
-            [res addObject:medicine];
-            [medicine release];
-        }
-        sqlite3_finalize(st);
-    }
     sqlite3_close([mMedAlertDB mDB]);
     
     return res;
@@ -181,6 +157,20 @@
     sqlite3_close(db);
     
     return YES;
+}
+
+-(NSInteger) medicineIDByName:(NSString *)name
+{
+    NSInteger res = -1;
+    NSString *SQLquery = [NSString stringWithFormat:@"SELECT id FROM medicine WHERE name='%@'", name];
+    
+    sqlite3_stmt *stmt = [mMedAlertDB query:SQLquery];
+    if(stmt != nil && sqlite3_step(stmt) == SQLITE_ROW)
+        res = sqlite3_column_int(stmt, 0);
+    sqlite3_finalize(stmt);
+    sqlite3_close([mMedAlertDB mDB]);
+    
+    return res;
 }
 
 @end

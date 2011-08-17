@@ -94,10 +94,7 @@
     UserDAO *udao = [[UserDAO alloc] init];
     ModelUser *user = [udao userWithLogin:[usernameTextField text] andPassword:[passwordTextField text]];
     if(user != nil)
-    {        
-//        UIAlertView *loginCorrect = [[UIAlertView alloc] initWithTitle:@"Login válido." message:@"Você existe!" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-//        [loginCorrect show];
-        
+    {
         user.mRemeberMe = [rememberMeSwitch isOn];
         [udao adjustInfoOfUser:user];
         ProfileTableViewController *pvc = [[ProfileTableViewController alloc] initWithStyle:UITableViewStyleGrouped];

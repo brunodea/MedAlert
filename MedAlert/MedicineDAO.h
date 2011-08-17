@@ -21,5 +21,6 @@
 -(BOOL) medicineExistsByID:(int) _id;
 -(BOOL) insertMedicine:(ModelMedicine *)medicine;
 -(BOOL) insertMedicine:(int)medicine_id RelativeToUser:(int)user_id;
+-(NSInteger) medicineIDByName:(NSString *)name;
 
 @end

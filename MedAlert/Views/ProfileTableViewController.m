@@ -44,13 +44,6 @@
     [super viewDidLoad];
 
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
-    MedicineDAO *mdao = [[MedicineDAO alloc] init];
-    mMedicineArray = [[NSMutableArray alloc] initWithArray:[mdao medicinesOfUser:mUser.mID]];
-    
-    [mMedicineArray addObject:@"add"];
-    
-    [mdao release];
 }
 
 - (void)viewDidUnload
@@ -63,11 +56,21 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    
+    [mMedicineArray release];
+    mMedicineArray = [[NSMutableArray alloc] init];
+    MedicineDAO *mdao = [[MedicineDAO alloc] init];
+    [mMedicineArray addObject:@"add"];
+    [mMedicineArray addObjectsFromArray:[mdao medicinesOfUser:mUser.mID]];
+    [mdao release];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [self.tableView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -115,7 +118,9 @@
         cell.accessoryType = UITableViewCellEditingStyleInsert;
     }
     else
+    {
         cell.textLabel.text = [[mMedicineArray objectAtIndex:indexPath.row] mName];
+    }
     
     return cell;
 }
@@ -149,19 +154,13 @@
 {
     if(indexPath.row == 0)
     {
-        UIViewController *vc = nil;
-        switch(indexPath.section)
+        if(indexPath.section == 0)
         {
-            case 0:
-                vc = [[MedConfViewController alloc] init];
-                vc.title = @"Adicionar Medicamento";
-                [self.navigationController pushViewController:vc animated:YES];
-                [vc release];
-                break;
-            case 1:
-                break;
-            default:
-                break;
+            MedConfViewController *vc = [[MedConfViewController alloc] init];
+            vc.title = @"Adicionar Medicamento";
+            vc.mUser = self.mUser;
+            [self.navigationController pushViewController:vc animated:YES];
+            [vc release];
         }
     }
     

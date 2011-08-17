@@ -13,14 +13,15 @@
 
 @implementation MedConfViewController
 
-@synthesize mMedName;
+@synthesize mMedNameTextField;
 @synthesize mDoneButton;
+@synthesize mUser;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        mUser = nil;
     }
     return self;
 }
@@ -44,24 +45,26 @@
 {
     [super viewDidLoad];
     
-    mMedName.delegate = (id)self;
-    mMedName.returnKeyType = UIReturnKeyDone;
+    mMedNameTextField.delegate = (id)self;
+    mMedNameTextField.returnKeyType = UIReturnKeyDone;
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+    [mMedNameTextField release];
+    
+    [mUser release];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
-    //return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 -(BOOL) isFormOk
 {
-    if(mMedName.text == @"")
+    if(mMedNameTextField.text == @"")
     {
         UIAlertView *p = [[UIAlertView alloc] initWithTitle:@"Erro." message:@"Nome de medicamento não pode ser nulo." delegate:nil
                                               cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
@@ -77,19 +80,50 @@
 {
     if([self isFormOk] == NO)
         return;
+    NSString *alertTitle = @"Erro";
+    NSString *alertMsg = @"Medicamento já existe.";
+    
     ModelMedicine *m = [[ModelMedicine alloc] init];
-    m.mName = mMedName.text;
+    m.mName = mMedNameTextField.text;
     
     MedicineDAO *mdao = [[MedicineDAO alloc] init];
     if([mdao insertMedicine:m] == YES)
     {
-        UIAlertView *p = [[UIAlertView alloc] initWithTitle:@"Adicionado." message:@"Medicamento adicionado com sucesso." delegate:nil
-                                          cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-        [p show];
+        alertTitle = @"Sucesso";
+        alertMsg = @"Medicamento adicionado com sucesso.";
+        mMedNameTextField.text = @"";
+        
+        if(mUser != nil)
+        {
+            NSInteger medicine_id = [mdao medicineIDByName:[m mName]];
+        
+            if(medicine_id >= 0)
+                [mdao insertMedicine:medicine_id RelativeToUser:[mUser mID]];
+        }
     }
+    
+    UIAlertView *p = [[UIAlertView alloc] initWithTitle:alertTitle message:alertMsg delegate:nil
+                                      cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    [p show];
     
     [m release];
     [mdao release];
+}
+
+//Helps the keyboard to hide.
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    
+    return YES;
+}
+
+//keyboard hide when touching the background
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [mMedNameTextField resignFirstResponder];
+    
+    [super touchesBegan:touches withEvent:event];     
 }
 
 @end
