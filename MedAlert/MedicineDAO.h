@@ -17,11 +17,13 @@
 
 -(NSMutableArray *) medicinesOfUser:(int)user_id;
 -(NSMutableArray *) medicinesOfAlarm:(int)alarm_id;
+-(NSMutableArray *) allMedicines;
 -(BOOL) medicineExistsByName:(NSString *)name;
 -(BOOL) medicineExistsByID:(int) _id;
 -(BOOL) medicineExistsByUserID:(int) user_id AndMedicineID:(int) medicine_id;
 -(BOOL) insertMedicine:(ModelMedicine *)medicine;
 -(BOOL) insertMedicine:(int)medicine_id RelativeToUser:(int)user_id;
 -(NSInteger) medicineIDByName:(NSString *)name;
+-(NSMutableArray *) medicinesLike:(NSString *)name WithLimit:(int)limit;
 
 @end

@@ -115,12 +115,15 @@
     if(indexPath.row == 0)
     {
         cell.textLabel.text = @"Adicionar";
-        cell.accessoryType = UITableViewCellEditingStyleInsert;
+        cell.contentMode = UIViewContentModeCenter;
     }
     else
     {
         cell.textLabel.text = [[mMedicineArray objectAtIndex:indexPath.row] mName];
     }
+    
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.selectionStyle = UITableViewCellSelectionStyleGray;
     
     return cell;
 }
@@ -197,17 +200,22 @@
     
     return YES;
 }
-
+-(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return @"Remover";
+}
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO];
     if(indexPath.row == 0)
     {
         [self tableView: self.tableView accessoryButtonTappedForRowWithIndexPath:indexPath];
-//        [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO];
+    }
+    else
+    {
     }
     
     // Navigation logic may go here. Create and push another view controller.
@@ -218,6 +226,27 @@
      [self.navigationController pushViewController:detailViewController animated:YES];
      [detailViewController release];
      */
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Remoção" message:@"Remover do banco de dados?" delegate:self cancelButtonTitle:@"Não" otherButtonTitles:@"Sim", nil];
+        [alert show];
+        [alert release];
+        
+        if(indexPath.section == 0)
+        {
+            [mMedicineArray removeObjectAtIndex:indexPath.row];
+            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
+        }
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSLog(@"dasdas");
 }
 
 @end

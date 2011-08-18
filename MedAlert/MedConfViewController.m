@@ -15,6 +15,7 @@
 
 @synthesize mMedNameTextField;
 @synthesize mDoneButton;
+@synthesize mTipTextView;
 @synthesize mUser;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -80,26 +81,27 @@
 {
     if([self isFormOk] == NO)
         return;
-    NSString *alertTitle = @"Erro";
-    NSString *alertMsg = @"Medicamento já existe.";
+    NSString *alertTitle = @"Sucesso";
+    NSString *alertMsg =  @"Medicamento adicionado com sucesso.";
     
     ModelMedicine *m = [[ModelMedicine alloc] init];
     m.mName = mMedNameTextField.text;
     
     MedicineDAO *mdao = [[MedicineDAO alloc] init];
-    if([mdao insertMedicine:m] == YES)
+    [mdao insertMedicine:m];
+    
+    mMedNameTextField.text = @"";
+        
+    if(mUser != nil)
     {
-        alertTitle = @"Sucesso";
-        alertMsg = @"Medicamento adicionado com sucesso.";
-        mMedNameTextField.text = @"";
-        
-        if(mUser != nil)
+        NSInteger medicine_id = [mdao medicineIDByName:[m mName]];
+    
+        if(medicine_id >= 0)
         {
-            NSInteger medicine_id = [mdao medicineIDByName:[m mName]];
-        
-            if(medicine_id >= 0)
+            if([mdao insertMedicine:medicine_id RelativeToUser:[mUser mID]] == NO)
             {
-                [mdao insertMedicine:medicine_id RelativeToUser:[mUser mID]];
+                alertTitle = @"Erro";
+                alertMsg = @"Você já tem este medicamento.";
             }
         }
     }
@@ -126,6 +128,25 @@
     [mMedNameTextField resignFirstResponder];
     
     [super touchesBegan:touches withEvent:event];     
+}
+
+-(IBAction)userIsTyping:(id)sender
+{
+    MedicineDAO *mdao = [[MedicineDAO alloc] init];
+    NSMutableArray *ms = [mdao medicinesLike:mMedNameTextField.text WithLimit:100];
+    
+    NSString *res = @"";
+    
+    for(ModelMedicine *m in ms) 
+    {
+        res = [res stringByAppendingString:[m.mName stringByAppendingString:@"\n"]];
+    }
+    if(res == @"")
+        res = @"Nenhuma dica";
+    
+    mTipTextView.text = res;
+    
+    [mdao release];
 }
 
 @end
