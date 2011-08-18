@@ -26,7 +26,8 @@
 {
     NSMutableArray *res = [[[NSMutableArray alloc] init] autorelease];
     NSString *sql = [NSString stringWithFormat:@"SELECT medicine.name, medicine.id FROM medicine \
-                                                 WHERE medicine.id = %d",user_id];
+                                                 FROM medicine, medicine_user \
+                                                 WHERE edicine.id=medicine_user.medicine_id AND medicine_user.user_id=%d",user_id];
     sqlite3_stmt *st = [mMedAlertDB query:sql];
     
     while(sqlite3_step(st) == SQLITE_ROW)
@@ -88,7 +89,21 @@
 -(BOOL) medicineExistsByID:(int)_id
 {
     BOOL found = NO;
-    NSString *SQLquery = [NSString stringWithFormat:@"SELECT name FROM medicine WHERE id='%@'", [[NSString alloc] initWithFormat:@"%d",_id]];
+    NSString *SQLquery = [NSString stringWithFormat:@"SELECT name FROM medicine WHERE id=%d", _id];
+    
+    sqlite3_stmt *stmt = [mMedAlertDB query:SQLquery];
+    if(stmt != nil && sqlite3_step(stmt) == SQLITE_ROW)
+        found = YES;
+    sqlite3_finalize(stmt);
+    sqlite3_close([mMedAlertDB mDB]);
+    
+    return found; 
+}
+
+-(BOOL) medicineExistsByUserID:(int)user_id AndMedicineID:(int)medicine_id
+{
+    BOOL found = NO;
+    NSString *SQLquery = [NSString stringWithFormat:@"SELECT * FROM medicine_user WHERE user_id=%d AND medicine_id=%d",user_id,medicine_id];
     
     sqlite3_stmt *stmt = [mMedAlertDB query:SQLquery];
     if(stmt != nil && sqlite3_step(stmt) == SQLITE_ROW)
@@ -131,19 +146,25 @@
 
 -(BOOL) insertMedicine:(int)medicine_id RelativeToUser:(int)user_id
 {
-    if([self medicineExistsByID:user_id] == YES)
+    if([self medicineExistsByUserID:user_id AndMedicineID:medicine_id] == YES)
         return NO;
-    
     const char *dbpath = [[mMedAlertDB mDBPath] UTF8String];
     sqlite3 *db = [mMedAlertDB mDB];
     if(sqlite3_open(dbpath, &db) == SQLITE_OK)
     {
         const char *sql = "INSERT INTO medicine_user (medicine_id,user_id) VALUES(?,?)";
         sqlite3_stmt *st = nil;
+        NSLog(@"HAHHA");
         if(sqlite3_prepare_v2(db, sql, -1, &st, NULL) != SQLITE_OK)
+        {
+            NSLog(@"%s",sqlite3_errmsg(db));
             return NO;
+        }
+        NSLog(@"HEHEHE");
         sqlite3_bind_int(st, 1, medicine_id);
         sqlite3_bind_int(st, 2, user_id);
+        
+        NSLog(@"%s u:%d m:%d", sql,user_id,medicine_id);
         
         if(sqlite3_step(st) != SQLITE_DONE) 
         {
@@ -166,7 +187,7 @@
     
     sqlite3_stmt *stmt = [mMedAlertDB query:SQLquery];
     if(stmt != nil && sqlite3_step(stmt) == SQLITE_ROW)
-        res = sqlite3_column_int(stmt, 0);
+        res = sqlite3_column_int(stmt, 0);    
     sqlite3_finalize(stmt);
     sqlite3_close([mMedAlertDB mDB]);
     

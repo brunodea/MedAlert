@@ -98,7 +98,9 @@
             NSInteger medicine_id = [mdao medicineIDByName:[m mName]];
         
             if(medicine_id >= 0)
+            {
                 [mdao insertMedicine:medicine_id RelativeToUser:[mUser mID]];
+            }
         }
     }
     
