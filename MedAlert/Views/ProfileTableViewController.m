@@ -235,7 +235,7 @@
         {
             ModelMedicine *med = (ModelMedicine *)[mMedicineArray objectAtIndex:indexPath.row];
             MedicineDAO *mdao = [[MedicineDAO alloc] init];
-            [mdao removeMedicineByID:[med mID]];
+            [mdao removeMedicineByID:[med mID] FromUserByID:[mUser mID]];
             [mdao release];
             
             [mMedicineArray removeObjectAtIndex:indexPath.row];

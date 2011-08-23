@@ -98,7 +98,7 @@
         user.mRemeberMe = [rememberMeSwitch isOn];
         [udao adjustInfoOfUser:user];
         ProfileTableViewController *pvc = [[ProfileTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        pvc.title = @"Profile";
+        pvc.title = [NSString stringWithFormat:@"Profile - %@",[user mName]];
         pvc.mUser = user;
         [self.navigationController pushViewController:pvc animated:YES];
         [pvc release];

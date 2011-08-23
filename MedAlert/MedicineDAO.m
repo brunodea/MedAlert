@@ -258,7 +258,7 @@
 -(BOOL) isMedicineUsedByID:(NSInteger)medicine_id
 {
     BOOL isUsed = NO;
-    NSString *SQLquery = [NSString stringWithFormat:@"DELETE FROM medicine_user WHERE medicine_id=%d",medicine_id];    
+    NSString *SQLquery = [NSString stringWithFormat:@"SELECT * FROM medicine_user WHERE medicine_id=%d",medicine_id];    
     sqlite3_stmt *stmt = [mMedAlertDB query:SQLquery];
     if(stmt != nil)
     {
