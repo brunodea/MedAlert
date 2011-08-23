@@ -25,5 +25,7 @@
 -(BOOL) insertMedicine:(int)medicine_id RelativeToUser:(int)user_id;
 -(NSInteger) medicineIDByName:(NSString *)name;
 -(NSMutableArray *) medicinesLike:(NSString *)name WithLimit:(int)limit;
+-(void) removeMedicineByID:(NSInteger) medicine_id FromUserByID:(NSInteger) user_id;
+-(void) removeIfNotUsedMedicineByID:(NSInteger)medicine_id;
 
 @end

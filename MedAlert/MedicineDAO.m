@@ -166,7 +166,6 @@
     sqlite3_close(db);
     
     return YES;
-    
 }
 
 -(BOOL) insertMedicine:(int)medicine_id RelativeToUser:(int)user_id
@@ -242,6 +241,47 @@
     sqlite3_close([mMedAlertDB mDB]);
     
     return res;
+}
+
+-(void) removeMedicineByID:(NSInteger)medicine_id FromUserByID:(NSInteger)user_id
+{
+    NSString *SQLquery = [NSString stringWithFormat:@"DELETE FROM medicine_user WHERE medicine_id=%d AND user_id=%d",medicine_id,user_id];    
+    sqlite3_stmt *stmt = [mMedAlertDB query:SQLquery];
+    if(stmt != nil)
+        sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+    sqlite3_close([mMedAlertDB mDB]);
+    
+    [self removeIfNotUsedMedicineByID:medicine_id];
+}
+
+-(BOOL) isMedicineUsedByID:(NSInteger)medicine_id
+{
+    BOOL isUsed = NO;
+    NSString *SQLquery = [NSString stringWithFormat:@"DELETE FROM medicine_user WHERE medicine_id=%d",medicine_id];    
+    sqlite3_stmt *stmt = [mMedAlertDB query:SQLquery];
+    if(stmt != nil)
+    {
+        if(sqlite3_step(stmt) == SQLITE_ROW)
+            isUsed = YES;
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close([mMedAlertDB mDB]);
+    
+    return isUsed;
+}
+
+-(void) removeIfNotUsedMedicineByID:(NSInteger)medicine_id
+{
+    if([self isMedicineUsedByID:medicine_id] == NO) 
+    {
+        NSString *SQLquery = [NSString stringWithFormat:@"DELETE FROM medicine WHERE id=%d",medicine_id];    
+        sqlite3_stmt *stmt = [mMedAlertDB query:SQLquery];
+        if(stmt != nil)
+            sqlite3_step(stmt);
+        sqlite3_finalize(stmt);
+        sqlite3_close([mMedAlertDB mDB]);
+    }
 }
 
 @end

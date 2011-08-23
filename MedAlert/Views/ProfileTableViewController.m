@@ -19,7 +19,6 @@
 {
     self = [super initWithStyle:style];
     if (self) {
-        
     }
     return self;
 }
@@ -232,12 +231,13 @@
 {
     if(editingStyle == UITableViewCellEditingStyleDelete)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Remoção" message:@"Remover do banco de dados?" delegate:self cancelButtonTitle:@"Não" otherButtonTitles:@"Sim", nil];
-        [alert show];
-        [alert release];
-        
         if(indexPath.section == 0)
         {
+            ModelMedicine *med = (ModelMedicine *)[mMedicineArray objectAtIndex:indexPath.row];
+            MedicineDAO *mdao = [[MedicineDAO alloc] init];
+            [mdao removeMedicineByID:[med mID]];
+            [mdao release];
+            
             [mMedicineArray removeObjectAtIndex:indexPath.row];
             [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
         }
@@ -246,7 +246,6 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"dasdas");
 }
 
 @end
