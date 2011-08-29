@@ -27,5 +27,5 @@
 -(NSMutableArray *) medicinesLike:(NSString *)name WithLimit:(int)limit;
 -(void) removeMedicineByID:(NSInteger) medicine_id FromUserByID:(NSInteger) user_id;
 -(void) removeIfNotUsedMedicineByID:(NSInteger)medicine_id;
-
+-(BOOL) updateMedicine:(ModelMedicine *)medicine ofUser:(ModelUser *)user;
 @end

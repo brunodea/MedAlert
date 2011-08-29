@@ -11,8 +11,10 @@
 
 @interface ModelMedicine : Model {
     NSString *mName;
+    NSString *mNote;
 }
 
 @property (nonatomic, retain) NSString *mName;
+@property (nonatomic, retain) NSString *mNote;
 
 @end

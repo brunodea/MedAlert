@@ -12,5 +12,6 @@
 @implementation ModelMedicine
 
 @synthesize mName;
+@synthesize mNote;
 
 @end

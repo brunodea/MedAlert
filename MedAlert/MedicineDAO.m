@@ -25,7 +25,7 @@
 -(NSMutableArray *)medicinesOfUser:(int)user_id
 {
     NSMutableArray *res = [[[NSMutableArray alloc] init] autorelease];
-    NSString *sql = [NSString stringWithFormat:@"SELECT medicine.name, medicine.id \
+    NSString *sql = [NSString stringWithFormat:@"SELECT medicine.name, medicine.id, medicine_user.note \
                                                  FROM medicine, medicine_user \
                                                  WHERE medicine.id=medicine_user.medicine_id AND medicine_user.user_id=%d",user_id];
     sqlite3_stmt *st = [mMedAlertDB query:sql];
@@ -34,10 +34,12 @@
     {
         NSString *name = [NSString stringWithUTF8String:(char *)sqlite3_column_text(st, 0)];
         NSInteger mid = (NSInteger)sqlite3_column_int(st, 1);
-        
+        NSString *note = [NSString stringWithUTF8String:(char *)sqlite3_column_text(st, 2)];
+
         ModelMedicine *medicine = [[ModelMedicine alloc] init];
         medicine.mName = name;
         medicine.mID = mid;
+        medicine.mNote = note;
         
         [res addObject:(ModelMedicine *)medicine];
         [medicine release];
@@ -176,7 +178,7 @@
     sqlite3 *db = [mMedAlertDB mDB];
     if(sqlite3_open(dbpath, &db) == SQLITE_OK)
     {
-        const char *sql = "INSERT INTO medicine_user (medicine_id,user_id) VALUES(?,?)";
+        const char *sql = "INSERT INTO medicine_user (medicine_id,user_id,note) VALUES(?,?,?)";
         sqlite3_stmt *st = nil;
         
         if(sqlite3_prepare_v2(db, sql, -1, &st, NULL) != SQLITE_OK)
@@ -187,6 +189,7 @@
         
         sqlite3_bind_int(st, 1, medicine_id);
         sqlite3_bind_int(st, 2, user_id);
+        sqlite3_bind_text(st, 3, [[NSString stringWithString:@"Sem notas."] UTF8String], -1, SQLITE_TRANSIENT);
         
         if(sqlite3_step(st) != SQLITE_DONE) 
         {
@@ -282,6 +285,22 @@
         sqlite3_finalize(stmt);
         sqlite3_close([mMedAlertDB mDB]);
     }
+}
+
+-(BOOL) updateMedicine:(ModelMedicine *)medicine ofUser:(ModelUser *)user
+{
+    NSString *sql = [NSString stringWithFormat:@"UPDATE medicine_user SET note=? WHERE medicine_id=%d AND user_id=%d",medicine.mID,user.mID];
+    sqlite3_stmt *st = [mMedAlertDB query:sql];
+    if(st != nil)
+    {
+        sqlite3_bind_text(st, 1, [medicine.mNote UTF8String], -1, SQLITE_TRANSIENT);
+        if(sqlite3_step(st) != SQLITE_DONE)
+            return NO;
+    }
+    sqlite3_finalize(st);
+    sqlite3_close([mMedAlertDB mDB]);
+    
+    return YES;
 }
 
 @end

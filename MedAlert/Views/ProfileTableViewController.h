@@ -14,9 +14,18 @@
 @interface ProfileTableViewController : UITableViewController {
     ModelUser *mUser;
     NSMutableArray *mMedicineArray;
+    NSMutableArray *mAlarmArray;
 }
 
 @property (nonatomic, retain) ModelUser *mUser;
 @property (nonatomic, retain) NSMutableArray *mMedicineArray;
+@property (nonatomic, retain) NSMutableArray *mAlarmArray;
+
+typedef enum
+{
+    ALARMS = 0,
+    MEDICINES,
+    NUM_SECTIONS
+} SectionPos;
 
 @end

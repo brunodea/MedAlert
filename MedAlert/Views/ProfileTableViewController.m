@@ -9,11 +9,14 @@
 #import "ProfileTableViewController.h"
 #import "MedicineDAO.h"
 #import "MedConfViewController.h"
+#import "MedNoteViewController.h"
+#import "AlarmConfViewController.h"
 
 @implementation ProfileTableViewController
 
 @synthesize mUser;
 @synthesize mMedicineArray;
+@synthesize mAlarmArray;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -50,6 +53,7 @@
     [super viewDidUnload];
     
     [mMedicineArray release];
+    [mAlarmArray release];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -63,6 +67,11 @@
     [mMedicineArray addObject:@"add"];
     [mMedicineArray addObjectsFromArray:[mdao medicinesOfUser:mUser.mID]];
     [mdao release];
+    
+    
+    [mAlarmArray release];
+    mAlarmArray = [[NSMutableArray alloc] init];
+    [mAlarmArray addObject:@"add"];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -93,13 +102,18 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 1;
+    return NUM_SECTIONS;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    return [mMedicineArray count];
+    NSInteger res = 0;
+    if(section == ALARMS)
+        res = [mAlarmArray count];
+    else if(section == MEDICINES)
+        res = [mMedicineArray count];
+    
+    return res;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -118,7 +132,10 @@
     }
     else
     {
-        cell.textLabel.text = [[mMedicineArray objectAtIndex:indexPath.row] mName];
+        if(indexPath.section == MEDICINES)
+            cell.textLabel.text = [[mMedicineArray objectAtIndex:indexPath.row] mName];
+        else if(indexPath.section == ALARMS)
+            cell.textLabel.text = @"Alarm Row";//[[mMedicineArray objectAtIndex:indexPath.row] mName];
     }
     
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -141,9 +158,9 @@
 {
     switch(section) 
     {
-        case 0:
+        case MEDICINES:
             return @"Medicamentos";
-        case 1:
+        case ALARMS:
             return @"Alarmes";
         default:
             NSLog(@"Erro ao ajustar titulo de uma section.");
@@ -156,7 +173,7 @@
 {
     if(indexPath.row == 0)
     {
-        if(indexPath.section == 0)
+        if(indexPath.section == MEDICINES)
         {
             MedConfViewController *vc = [[MedConfViewController alloc] init];
             vc.title = @"Adicionar Medicamento";
@@ -164,8 +181,30 @@
             [self.navigationController pushViewController:vc animated:YES];
             [vc release];
         }
+        else if(indexPath.section == ALARMS)
+        {
+            AlarmConfViewController *vc = [[AlarmConfViewController alloc] init];
+            vc.title = @"Alarme Temporizado";
+            
+            MedicineDAO *mdao = [[MedicineDAO alloc] init];
+            vc.mMedicinesArray = [mdao medicinesOfUser:[mUser mID]];
+            [self.navigationController pushViewController:vc animated:YES];
+            [vc release];
+            [mdao release];
+        }
     }
-    
+    else
+    {
+        if(indexPath.section == MEDICINES)
+        {
+            MedNoteViewController *vc = [[MedNoteViewController alloc] init];
+            vc.title = @"Notas";
+            vc.mUser = self.mUser;
+            vc.mMedicine = [mMedicineArray objectAtIndex:indexPath.row];
+            [self.navigationController pushViewController:vc animated:YES];
+            [vc release];
+        }
+    }
 }
 
 /*
@@ -209,13 +248,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO];
-    if(indexPath.row == 0)
-    {
-        [self tableView: self.tableView accessoryButtonTappedForRowWithIndexPath:indexPath];
-    }
-    else
-    {
-    }
+    [self tableView: self.tableView accessoryButtonTappedForRowWithIndexPath:indexPath];
     
     // Navigation logic may go here. Create and push another view controller.
     /*
@@ -231,7 +264,7 @@
 {
     if(editingStyle == UITableViewCellEditingStyleDelete)
     {
-        if(indexPath.section == 0)
+        if(indexPath.section == MEDICINES)
         {
             ModelMedicine *med = (ModelMedicine *)[mMedicineArray objectAtIndex:indexPath.row];
             MedicineDAO *mdao = [[MedicineDAO alloc] init];
