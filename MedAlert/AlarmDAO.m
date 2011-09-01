@@ -20,7 +20,7 @@
     sqlite3 *db = [mMedAlertDB mDB];
     if(sqlite3_open(dbpath, &db) == SQLITE_OK)
     {
-        const char *sql = "INSERT INTO user (is_active,created_on,inits_on,type,days,id_user,id_alarm_note) VALUES(?,?,?,?,?,?,?)";
+        const char *sql = "INSERT INTO user (is_active,created_on,inits_on,type,days,id_user,id_alarm_note, id_medicine) VALUES(?,?,?,?,?,?,?,?)";
         sqlite3_stmt *st = nil;
         if(sqlite3_prepare_v2(db, sql, -1, &st, NULL) != SQLITE_OK)
             return NO;
@@ -28,7 +28,7 @@
         sqlite3_bind_int(st, 1, alarm.mActive);
         
         NSDateFormatter *date_formatter = [[NSDateFormatter alloc] init];
-        [date_formatter setDateFormat:@"HH:mm"];
+        [date_formatter setDateFormat:@"dd/MM/yyyy HH:mm"];
         
         sqlite3_bind_text(st, 2, [[date_formatter stringFromDate:alarm.mCreationDate] UTF8String],  -1, SQLITE_TRANSIENT);
         sqlite3_bind_text(st, 3, [[date_formatter stringFromDate:alarm.mInitDate] UTF8String], -1, SQLITE_TRANSIENT);
@@ -39,6 +39,7 @@
         sqlite3_bind_int(st, 5, 0); //days
         sqlite3_bind_int(st, 6, [alarm.mUser mID]);
         sqlite3_bind_int(st, 7, [alarm.mAlarmNote mID]);
+        sqlite3_bind_int(st, 8, [alarm.mMedicine mID]);
         
         if(sqlite3_step(st) != SQLITE_DONE) 
         {
@@ -56,11 +57,10 @@
 
 -(ModelAlarm *) alarmFromID:(int)id_
 {
-    return nil;
     ModelAlarm *res = nil;
     
     NSString *sql = [NSString stringWithFormat:@"SELECT is_active,created_on,inits_on,type,days,id_user, \
-                     id_alarm_note FROM alarm WHERE id=%d",id_];
+                     id_alarm_note, id_medicine FROM alarm WHERE id=%d",id_];
     
     sqlite3_stmt *st = [mMedAlertDB query:sql];
     if(st != nil && sqlite3_step(st) == SQLITE_ROW)
@@ -72,6 +72,7 @@
         int days = sqlite3_column_int(st, 4);
         int iduser = sqlite3_column_int(st, 5);
         int idalarmnote = sqlite3_column_int(st, 6);
+        int idmedicine = sqlite3_column_int(st, 7);
         
         sqlite3_finalize(st);
         sqlite3_close([mMedAlertDB mDB]);
@@ -80,7 +81,7 @@
         res.mActive = isActive;
         
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"HH:mm"];
+        [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm"];
         
         res.mCreationDate = [dateFormatter dateFromString:created_on];
         res.mInitDate = [dateFormatter dateFromString:inits_on];
@@ -94,7 +95,7 @@
         [udao release];
         
         MedicineDAO *mdao = [[MedicineDAO alloc] init];
-        res.mMedicines = [mdao medicinesOfAlarm:id_];
+        res.mMedicine = [mdao medicineByID:idmedicine];
         [mdao release];
         
         AlarmNoteDAO *adao = [[AlarmNoteDAO alloc] init];
@@ -103,5 +104,6 @@
     
     return res;
 }
+
 
 @end

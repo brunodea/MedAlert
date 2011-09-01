@@ -79,6 +79,8 @@
                                           cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [p show];
         [p release];
+        
+        [self.navigationController popViewControllerAnimated:YES];
     }
     [mdao release];
 }

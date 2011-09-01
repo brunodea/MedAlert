@@ -65,9 +65,9 @@
 
 -(BOOL) isFormOk
 {
-    if(mMedNameTextField.text == @"")
+    if([mMedNameTextField.text length] == 0)
     {
-        UIAlertView *p = [[UIAlertView alloc] initWithTitle:@"Erro." message:@"Nome de medicamento não pode ser nulo." delegate:nil
+        UIAlertView *p = [[UIAlertView alloc] initWithTitle:@"Erro." message:@"Nome de medicamento não pode ser vazio." delegate:nil
                                               cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [p show];
         [p release];
@@ -102,6 +102,10 @@
             {
                 alertTitle = @"Erro";
                 alertMsg = @"Você já tem este medicamento.";
+            }
+            else
+            {
+                [self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:1] animated:YES];
             }
         }
     }

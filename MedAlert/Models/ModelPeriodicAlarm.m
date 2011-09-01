@@ -11,7 +11,6 @@
 
 @implementation ModelPeriodicAlarm
 
-@synthesize mAlarm;
 @synthesize mAlertInterval;
 
 @end

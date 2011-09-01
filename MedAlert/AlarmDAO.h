@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "DAO.h"
 #import "ModelAlarm.h"
+#import "ModelMedicine.h"
 
 @interface AlarmDAO : DAO {
 }

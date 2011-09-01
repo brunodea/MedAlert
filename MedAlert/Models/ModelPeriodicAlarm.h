@@ -10,12 +10,10 @@
 #import "Model.h"
 #import "ModelAlarm.h"
 
-@interface ModelPeriodicAlarm : Model {
+@interface ModelPeriodicAlarm : ModelAlarm {
     double mAlertInterval;
-    ModelAlarm *mAlarm;
 }
 
 @property (nonatomic, assign) double mAlertInterval;
-@property (nonatomic, retain) ModelAlarm *mAlarm;
 
 @end

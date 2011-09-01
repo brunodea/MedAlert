@@ -15,11 +15,13 @@
 @interface ModelAlarm : Model {
     BOOL mActive;
     ModelUser *mUser;
-    NSMutableArray *mMedicines;
+    ModelMedicine *mMedicine;
     AlarmNote *mAlarmNote;
     
     NSDate *mCreationDate;
     NSDate *mInitDate;
+    
+    NSString *mAlarmLabel;
     
     BOOL mMonday;
     BOOL mTuesday;
@@ -31,7 +33,7 @@
 }
 
 @property (nonatomic, retain) ModelUser *mUser;
-@property (nonatomic, retain) NSMutableArray *mMedicines;
+@property (nonatomic, retain) ModelMedicine *mMedicine;
 @property (nonatomic, retain) AlarmNote *mAlarmNote;
 @property (nonatomic, retain) NSDate *mCreationDate;
 @property (nonatomic, retain) NSDate *mInitDate;

@@ -12,11 +12,13 @@
 @implementation AlarmConfViewController
 
 @synthesize mIntervalTimePickerView;
+@synthesize mInitialDatePickerView;
 @synthesize mFinalDatePickerView;
 
 @synthesize mAlarmLabelTextField;
 
-@synthesize mContinueToDateButton;
+@synthesize mContinueToInitDateButton;
+@synthesize mContinueToFinalDateButton;
 @synthesize mContinueToNoteButton;
 @synthesize mSaveButton;
 
@@ -28,14 +30,17 @@
 @synthesize mMinutesArray;
 @synthesize mMedicinesArray;
 
+@synthesize mInitialDateView;
 @synthesize mFinishDateView;
 @synthesize mAlarmNoteView;
+
+@synthesize mCurrentPeriodicAlarm;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        mMedicinesArray = nil;
+        mCurrentPeriodicAlarm = [[ModelPeriodicAlarm alloc] init];
     }
     return self;
 }
@@ -93,13 +98,16 @@
     [mSaveButton release];
     [mIntervalTimePickerView release];
     [mFinalDatePickerView release];
-    [mContinueToDateButton release];
+    [mContinueToInitDateButton release];
+    [mContinueToFinalDateButton release];
     [mContinueToNoteButton release];
     [mNoteTextView release];
     
     [mHoursArray release];
     [mMinutesArray release];
     [mMedicinesArray release];
+    
+    [mCurrentPeriodicAlarm release];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -159,7 +167,7 @@
     }
 }
 
--(IBAction)continueToDateButtonPressed:(id)sender
+-(IBAction)continueToInitDateButtonPressed:(id)sender
 {
     if([[mAlarmLabelTextField text] isEqualToString:@""] == YES)
     {
@@ -172,21 +180,30 @@
     else
     {
         UIViewController *vc = [[UIViewController alloc] init];
-        vc.title = @"Data Final";
-        vc.view = mFinishDateView;
+        vc.title = @"Data Inicial";
+        vc.view = mInitialDateView;
         [self.navigationController pushViewController:vc animated:YES];
         [vc release];
-        
-        NSInteger medi = [mIntervalTimePickerView selectedRowInComponent:0];
-        NSInteger hi = [mIntervalTimePickerView selectedRowInComponent:1];
-        NSInteger mini = [mIntervalTimePickerView selectedRowInComponent:2];
-        
-        ModelMedicine *medication = [mMedicinesArray objectAtIndex:medi];
-        NSNumber *hours = [mHoursArray objectAtIndex:hi];
-        NSNumber *minutes = [mMinutesArray objectAtIndex:mini];
-        
-        NSLog(@"%@ %dh %dmin",[medication mName],[hours integerValue],[minutes integerValue]);
     }
+}
+
+-(IBAction)continueToFinalDateButtonPressed:(id)sender
+{
+    UIViewController *vc = [[UIViewController alloc] init];
+    vc.title = @"Data Final";
+    vc.view = mFinishDateView;
+    [self.navigationController pushViewController:vc animated:YES];
+    [vc release];
+        
+    NSInteger medi = [mIntervalTimePickerView selectedRowInComponent:0];
+    NSInteger hi = [mIntervalTimePickerView selectedRowInComponent:1];
+    NSInteger mini = [mIntervalTimePickerView selectedRowInComponent:2];
+    
+    ModelMedicine *medication = [mMedicinesArray objectAtIndex:medi];
+    NSNumber *hours = [mHoursArray objectAtIndex:hi];
+    NSNumber *minutes = [mMinutesArray objectAtIndex:mini];
+    
+    NSLog(@"%@ %dh %dmin",[medication mName],[hours integerValue],[minutes integerValue]);
 }
 
 -(IBAction) continueToNoteButtonPressed:(id)sender
@@ -200,12 +217,24 @@
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init]; 
     [dateFormatter setDateStyle:NSDateFormatterNoStyle]; 
     [dateFormatter setTimeStyle:NSDateFormatterShortStyle]; 
-    [dateFormatter setDateFormat:(NSString*) @"dd/MM/yyyy"]; 
+    [dateFormatter setDateFormat:(NSString*) @"dd/MM/yyyy HH:mm"]; 
     
     NSString *str = [dateFormatter stringFromDate:[mFinalDatePickerView date]];
     NSLog(@"%@", str);
     
     [dateFormatter release];
+}
+
+-(IBAction)saveButtonPressed:(id)sender
+{
+    NSString *alertTitle = @"Sucesso";
+    NSString *alertMsg = @"Alarme adicionado com sucesso.";
+    
+    UIAlertView *succ = [[UIAlertView alloc] initWithTitle:alertTitle message:alertMsg delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    [succ show];
+    [succ release];
+    
+    [self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:1] animated:YES];
 }
 
 @end

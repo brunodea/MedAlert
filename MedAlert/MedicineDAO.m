@@ -50,31 +50,6 @@
     return res;
 }
 
--(NSMutableArray *)medicinesOfAlarm:(int)alarm_id
-{
-    NSMutableArray *res = [NSMutableArray array];
-    
-    NSString *sql = [NSString stringWithFormat:@"SELECT medicine.name,medicine.id FROM medicine,alarm_medicine\
-                                                 WHERE alarm_medicine.alarm_id=%d AND medicine.id = alarm_medicine.medicine_id",alarm_id];
-    sqlite3_stmt *st = [mMedAlertDB query:sql];
-    
-    while(st != nil && sqlite3_step(st) == SQLITE_ROW)
-    {
-        NSString *name = [NSString stringWithUTF8String:(char *)sqlite3_column_text(st, 0)];
-        NSInteger mid = (NSInteger)sqlite3_column_int(st, 1);
-        
-        ModelMedicine *medicine = [[ModelMedicine alloc] init];
-        medicine.mName = name;
-        medicine.mID = mid;
-        [res addObject:medicine];
-        [medicine release];
-    }
-    sqlite3_finalize(st);
-    sqlite3_close([mMedAlertDB mDB]);
-    
-    return res;
-}
-
 -(NSMutableArray *)allMedicines
 {
     NSMutableArray *res = [NSMutableArray array];
@@ -116,15 +91,33 @@
 -(BOOL) medicineExistsByID:(int)_id
 {
     BOOL found = NO;
-    NSString *SQLquery = [NSString stringWithFormat:@"SELECT name FROM medicine WHERE id=%d", _id];
+    ModelMedicine *m = [self medicineByID:_id];
+    if(m != nil)
+    {
+        [m release];
+        found = YES;
+    }
+    return found; 
+}
+
+-(ModelMedicine *)medicineByID:(NSInteger)medicine_id
+{
+    ModelMedicine *res = nil;
+    NSString *SQLquery = [NSString stringWithFormat:@"SELECT name FROM medicine WHERE id=%d", medicine_id];
     
     sqlite3_stmt *stmt = [mMedAlertDB query:SQLquery];
     if(stmt != nil && sqlite3_step(stmt) == SQLITE_ROW)
-        found = YES;
+    {
+        NSString *name = [NSString stringWithUTF8String:(char *)sqlite3_column_text(stmt, 0)];
+        
+        res = [[ModelMedicine alloc] init];
+        res.mID = medicine_id;
+        res.mName = name;
+    }
     sqlite3_finalize(stmt);
     sqlite3_close([mMedAlertDB mDB]);
     
-    return found; 
+    return res;
 }
 
 -(BOOL) medicineExistsByUserID:(int)user_id AndMedicineID:(int)medicine_id

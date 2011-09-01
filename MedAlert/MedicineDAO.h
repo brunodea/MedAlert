@@ -16,7 +16,6 @@
 }
 
 -(NSMutableArray *) medicinesOfUser:(int)user_id;
--(NSMutableArray *) medicinesOfAlarm:(int)alarm_id;
 -(NSMutableArray *) allMedicines;
 -(BOOL) medicineExistsByName:(NSString *)name;
 -(BOOL) medicineExistsByID:(int) _id;
@@ -28,4 +27,5 @@
 -(void) removeMedicineByID:(NSInteger) medicine_id FromUserByID:(NSInteger) user_id;
 -(void) removeIfNotUsedMedicineByID:(NSInteger)medicine_id;
 -(BOOL) updateMedicine:(ModelMedicine *)medicine ofUser:(ModelUser *)user;
+-(ModelMedicine *) medicineByID:(NSInteger)medicine_id;
 @end

@@ -116,13 +116,14 @@ static MedAlertDB *msInstance = nil;
         [self exec:@"CREATE TABLE IF NOT EXISTS alarm_note(id INTEGER PRIMARY KEY AUTOINCREMENT, note TEXT)"];
         [self exec:@"CREATE TABLE IF NOT EXISTS alarm(id INTEGER PRIMARY KEY AUTOINCREMENT, is_active BOOLEAN, created_on TEXT, \
                     inits_on TEXT, type INTEGER, days INTEGER, \
-                    id_user INTEGER, id_alarm_note INTEGER, \
+                    id_user INTEGER, id_alarm_note INTEGER, id_medicine INTEGER, \
+                    FOREIGN KEY(id_medicine) REFERENCES medicine(id), \
                     FOREIGN KEY(id_user) REFERENCES user(id), \
                     FOREIGN KEY(id_alarm_note) REFERENCES alarm_note(id))"];
         
-        [self exec:@"CREATE TABLE IF NOT EXISTS alarm_medicine (alarm_id INTEGER, medicine_id INTEGER, \
-                     FOREIGN KEY(alarm_id) REFERENCES alarm(id), FOREIGN KEY(medicine_id) REFERENCES medicine(id))"];
-        
+//        [self exec:@"CREATE TABLE IF NOT EXISTS alarm_medicine (alarm_id INTEGER, medicine_id INTEGER, \
+//                     FOREIGN KEY(alarm_id) REFERENCES alarm(id), FOREIGN KEY(medicine_id) REFERENCES medicine(id))"];
+//        
         [self exec:@"CREATE TABLE IF NOT EXISTS medicine_user (medicine_id INTEGER, user_id INTEGER, note TEXT, \
                      FOREIGN KEY(medicine_id) REFERENCES medicine(id), FOREIGN KEY(user_id) REFERENCES user(id))"];
         

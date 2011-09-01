@@ -7,15 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ModelPeriodicAlarm.h"
 
 
 @interface AlarmConfViewController : UIViewController <UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate> {
     IBOutlet UITextField *mAlarmLabelTextField;
     
     IBOutlet UIPickerView *mIntervalTimePickerView;
+    IBOutlet UIDatePicker *mInitialDatePickerView;
     IBOutlet UIDatePicker *mFinalDatePickerView;
     
-    IBOutlet UIButton *mContinueToDateButton;
+    IBOutlet UIButton *mContinueToInitDateButton;
+    IBOutlet UIButton *mContinueToFinalDateButton;
     IBOutlet UIButton *mContinueToNoteButton;
     IBOutlet UIButton *mSaveButton;
     
@@ -27,16 +30,21 @@
     NSArray *mMinutesArray;
     NSArray *mMedicinesArray;
     
+    IBOutlet UIView *mInitialDateView;
     IBOutlet UIView *mFinishDateView;
     IBOutlet UIView *mAlarmNoteView;
+    
+    ModelPeriodicAlarm *mCurrentPeriodicAlarm;
 }
 
 @property (nonatomic, retain) IBOutlet UITextField *mAlarmLabelTextField;
 
 @property (nonatomic, retain) IBOutlet UIPickerView *mIntervalTimePickerView;
+@property (nonatomic, retain) IBOutlet UIDatePicker *mInitialDatePickerView;
 @property (nonatomic, retain) IBOutlet UIDatePicker *mFinalDatePickerView;
 
-@property (nonatomic, retain) IBOutlet UIButton *mContinueToDateButton;
+@property (nonatomic, retain) IBOutlet UIButton *mContinueToInitDateButton;
+@property (nonatomic, retain) IBOutlet UIButton *mContinueToFinalDateButton;
 @property (nonatomic, retain) IBOutlet UIButton *mContinueToNoteButton;
 @property (nonatomic, retain) IBOutlet UIButton *mSaveButton;
 
@@ -48,11 +56,15 @@
 @property (nonatomic, retain) NSArray *mMinutesArray;
 @property (nonatomic, retain) NSArray *mMedicinesArray;
 
+@property (nonatomic, retain) IBOutlet UIView *mInitialDateView;
 @property (nonatomic, retain) IBOutlet UIView *mFinishDateView;
 @property (nonatomic, retain) IBOutlet UIView *mAlarmNoteView;
 
+@property (nonatomic, retain) ModelPeriodicAlarm *mCurrentPeriodicAlarm;
 
--(IBAction) continueToDateButtonPressed:(id)sender;
+-(IBAction) continueToInitDateButtonPressed:(id)sender;
+-(IBAction) continueToFinalDateButtonPressed:(id)sender;
 -(IBAction) continueToNoteButtonPressed:(id)sender;
+-(IBAction) saveButtonPressed:(id)sender;
 
 @end

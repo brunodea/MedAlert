@@ -15,7 +15,7 @@
 @synthesize mAlarmNote;
 @synthesize mCreationDate;
 @synthesize mInitDate;
-@synthesize mMedicines;
+@synthesize mMedicine;
 @synthesize mUser;
 
 @synthesize mMonday;
@@ -27,7 +27,7 @@
 @synthesize mSunday;
 
 -(id) initWithUser:(ModelUser *)user
-          medicines:(NSMutableArray *)medicines
+          medicine:(ModelMedicine *)medicine
          alarmNote:(AlarmNote *)alarmNote
           initDate:(NSDate *)initDate
 {
@@ -36,7 +36,7 @@
     if(self != nil)
     {
         mUser = user;
-        mMedicines = medicines;
+        mMedicine = medicine;
         mAlarmNote = alarmNote;
         mActive = YES;
         
@@ -56,17 +56,16 @@
     return self;
 }
 
-//-(void) dealloc
-//{
-//    [super dealloc];
-//    
-//    [mCreationDate dealloc];
+-(void) dealloc
+{
+    [super dealloc];
+
 //    [mUser dealloc];
 //    [mMedicine dealloc];
 //    [mAlarmNote dealloc];
 //    [mInitDate dealloc];
-//    [mCreationDate dealloc];
-//}
+    [mCreationDate dealloc];
+}
 
 
 @end
