@@ -176,15 +176,16 @@
         vc.view = mFinishDateView;
         [self.navigationController pushViewController:vc animated:YES];
         [vc release];
-//        NSInteger medi = [mIntervalTimePickerView selectedRowInComponent:0];
-//        NSInteger hi = [mIntervalTimePickerView selectedRowInComponent:1];
-//        NSInteger mini = [mIntervalTimePickerView selectedRowInComponent:2];
-//        
-//        ModelMedicine *medication = [mMedicinesArray objectAtIndex:medi];
-//        NSNumber *hours = [mHoursArray objectAtIndex:hi];
-//        NSNumber *minutes = [mMinutesArray objectAtIndex:mini];
-//        
-//        NSLog(@"%@ %dh %dmin",[medication mName],[hours integerValue],[minutes integerValue]);
+        
+        NSInteger medi = [mIntervalTimePickerView selectedRowInComponent:0];
+        NSInteger hi = [mIntervalTimePickerView selectedRowInComponent:1];
+        NSInteger mini = [mIntervalTimePickerView selectedRowInComponent:2];
+        
+        ModelMedicine *medication = [mMedicinesArray objectAtIndex:medi];
+        NSNumber *hours = [mHoursArray objectAtIndex:hi];
+        NSNumber *minutes = [mMinutesArray objectAtIndex:mini];
+        
+        NSLog(@"%@ %dh %dmin",[medication mName],[hours integerValue],[minutes integerValue]);
     }
 }
 
@@ -195,6 +196,16 @@
     vc.view = mAlarmNoteView;
     [self.navigationController pushViewController:vc animated:YES];
     [vc release];
+    
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init]; 
+    [dateFormatter setDateStyle:NSDateFormatterNoStyle]; 
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle]; 
+    [dateFormatter setDateFormat:(NSString*) @"dd/MM/yyyy"]; 
+    
+    NSString *str = [dateFormatter stringFromDate:[mFinalDatePickerView date]];
+    NSLog(@"%@", str);
+    
+    [dateFormatter release];
 }
 
 @end
