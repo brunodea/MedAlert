@@ -11,14 +11,25 @@
 
 @implementation AlarmConfViewController
 
-@synthesize mPickerView;
+@synthesize mIntervalTimePickerView;
+@synthesize mFinalDatePickerView;
+
 @synthesize mAlarmLabelTextField;
+
+@synthesize mContinueToDateButton;
+@synthesize mContinueToNoteButton;
 @synthesize mSaveButton;
+
 @synthesize mMedName;
+
+@synthesize mNoteTextView;
 
 @synthesize mHoursArray;
 @synthesize mMinutesArray;
 @synthesize mMedicinesArray;
+
+@synthesize mFinishDateView;
+@synthesize mAlarmNoteView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -51,7 +62,7 @@
     mAlarmLabelTextField.delegate = (id)self;
     
     NSMutableArray *arr = [[NSMutableArray alloc] init];
-    for(int i = 0; i <= 24; i++)
+    for(int i = 0; i <= 100; i++)
     {
         NSNumber *n = [[NSNumber alloc] initWithInt:i];
         [arr addObject:n];
@@ -80,11 +91,14 @@
     
     [mAlarmLabelTextField release];
     [mSaveButton release];
-    [mPickerView release];
+    [mIntervalTimePickerView release];
+    [mFinalDatePickerView release];
+    [mContinueToDateButton release];
+    [mContinueToNoteButton release];
+    [mNoteTextView release];
     
     [mHoursArray release];
     [mMinutesArray release];
-    
     [mMedicinesArray release];
 }
 
@@ -145,9 +159,42 @@
     }
 }
 
--(IBAction)saveButtonPressed:(id)sender
+-(IBAction)continueToDateButtonPressed:(id)sender
 {
-    
+    if([[mAlarmLabelTextField text] isEqualToString:@""] == YES)
+    {
+        UIAlertView *problem = [[UIAlertView alloc] initWithTitle:@"Problema" 
+                                                          message:@"Você esqueceu de dar um rotulo para seu Alarme."
+                                                         delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        [problem show];
+        [problem release];
+    }
+    else
+    {
+        UIViewController *vc = [[UIViewController alloc] init];
+        vc.title = @"Data Final";
+        vc.view = mFinishDateView;
+        [self.navigationController pushViewController:vc animated:YES];
+        [vc release];
+//        NSInteger medi = [mIntervalTimePickerView selectedRowInComponent:0];
+//        NSInteger hi = [mIntervalTimePickerView selectedRowInComponent:1];
+//        NSInteger mini = [mIntervalTimePickerView selectedRowInComponent:2];
+//        
+//        ModelMedicine *medication = [mMedicinesArray objectAtIndex:medi];
+//        NSNumber *hours = [mHoursArray objectAtIndex:hi];
+//        NSNumber *minutes = [mMinutesArray objectAtIndex:mini];
+//        
+//        NSLog(@"%@ %dh %dmin",[medication mName],[hours integerValue],[minutes integerValue]);
+    }
+}
+
+-(IBAction) continueToNoteButtonPressed:(id)sender
+{
+    UIViewController *vc = [[UIViewController alloc] init];
+    vc.title = @"Nota";
+    vc.view = mAlarmNoteView;
+    [self.navigationController pushViewController:vc animated:YES];
+    [vc release];
 }
 
 @end

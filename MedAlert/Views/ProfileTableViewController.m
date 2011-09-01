@@ -46,6 +46,7 @@
     [super viewDidLoad];
 
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.navigationItem.rightBarButtonItem.title = @"Editar";
 }
 
 - (void)viewDidUnload
@@ -183,13 +184,26 @@
         }
         else if(indexPath.section == ALARMS)
         {
-            AlarmConfViewController *vc = [[AlarmConfViewController alloc] init];
-            vc.title = @"Alarme Temporizado";
-            
             MedicineDAO *mdao = [[MedicineDAO alloc] init];
-            vc.mMedicinesArray = [mdao medicinesOfUser:[mUser mID]];
-            [self.navigationController pushViewController:vc animated:YES];
-            [vc release];
+            NSArray *arr = [mdao medicinesOfUser:[mUser mID]];
+            if([arr count] > 0)
+            {
+                AlarmConfViewController *vc = [[AlarmConfViewController alloc] init];
+                vc.title = @"Alarme Temporizado";
+                vc.mMedicinesArray = arr;
+                
+                [self.navigationController pushViewController:vc animated:YES];
+                [vc release];
+            }
+            else
+            {
+                UIAlertView *problem = [[UIAlertView alloc] initWithTitle:@"Problema" 
+                                                                  message:@"Para você poder criar alarmes, deve ter ao menos um \
+                                                                            medicamento cadastrado."
+                                                                 delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                [problem show];
+                [problem release];
+            }
             [mdao release];
         }
     }
@@ -235,7 +249,6 @@
 {
     if(indexPath.row == 0)
         return NO;
-    
     return YES;
 }
 -(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -275,10 +288,6 @@
             [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
         }
     }
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
 }
 
 @end

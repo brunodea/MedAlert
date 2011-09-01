@@ -78,7 +78,7 @@
         UIAlertView *p = [[UIAlertView alloc] initWithTitle:@"Sucesso" message:@"Nota adicionada com sucesso." delegate:nil
                                           cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [p show];
-
+        [p release];
     }
     [mdao release];
 }

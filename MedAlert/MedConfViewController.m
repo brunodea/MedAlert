@@ -70,7 +70,7 @@
         UIAlertView *p = [[UIAlertView alloc] initWithTitle:@"Erro." message:@"Nome de medicamento não pode ser nulo." delegate:nil
                                               cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [p show];
-        
+        [p release];
         return NO;
     }
     
@@ -109,6 +109,7 @@
     UIAlertView *p = [[UIAlertView alloc] initWithTitle:alertTitle message:alertMsg delegate:nil
                                       cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     [p show];
+    [p release];
     
     [m release];
     [mdao release];

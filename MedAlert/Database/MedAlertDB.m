@@ -21,7 +21,8 @@ static MedAlertDB *msInstance = nil;
     @synchronized([MedAlertDB class])
     {        
         if(!msInstance)
-        {            [[self alloc] init];
+        {            
+            [[self alloc] init];
             return msInstance;
         }
         return msInstance;
@@ -96,7 +97,7 @@ static MedAlertDB *msInstance = nil;
 {
     NSString *docsDir;
     NSArray *dirPaths;
-    
+
     // Get the documents directory
     dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     

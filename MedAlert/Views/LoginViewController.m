@@ -111,6 +111,7 @@
     {
         UIAlertView *loginIncorrect = [[UIAlertView alloc] initWithTitle:@"Login inválido." message:@"Login e/ou senha incorretos." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [loginIncorrect show];
+        [loginIncorrect release];
     }
     [udao release];
 }

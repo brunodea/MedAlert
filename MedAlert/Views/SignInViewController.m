@@ -134,6 +134,7 @@
         UIAlertView *error = [[UIAlertView alloc] initWithTitle:alertTitle message:alertMsg delegate:nil 
                                               cancelButtonTitle:alertCancelButtonTitle otherButtonTitles:nil, nil];
         [error show];
+        [error release];
     }
     else
         user = [[ModelUser alloc] initWithName:[nameTF text] login:[loginTF text] andRemember:NO];
@@ -169,6 +170,7 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle message:alertMsg delegate:nil 
                                               cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [alert show];
+        [alert release];
         
         if(userInserted == YES)
         {
