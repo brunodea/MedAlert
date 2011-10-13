@@ -12,5 +12,14 @@
 @implementation ModelPeriodicAlarm
 
 @synthesize mAlertInterval;
+@synthesize mAlarmID;
+
+-(id)init
+{
+    [super init];
+    if(self != nil)
+        mType = 0;
+    return self;
+}
 
 @end

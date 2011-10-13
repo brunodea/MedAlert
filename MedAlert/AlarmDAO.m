@@ -20,7 +20,7 @@
     sqlite3 *db = [mMedAlertDB mDB];
     if(sqlite3_open(dbpath, &db) == SQLITE_OK)
     {
-        const char *sql = "INSERT INTO user (is_active,created_on,inits_on,type,days,id_user,id_alarm_note, id_medicine) VALUES(?,?,?,?,?,?,?,?)";
+        const char *sql = "INSERT INTO alarm (is_active,created_on,inits_on,type,days,id_user,id_alarm_note, id_medicine) VALUES(?,?,?,?,?,?,?,?)";
         sqlite3_stmt *st = nil;
         if(sqlite3_prepare_v2(db, sql, -1, &st, NULL) != SQLITE_OK)
             return NO;
@@ -35,8 +35,8 @@
         
         [date_formatter release];
         
-        sqlite3_bind_int(st, 4, 0); //type
-        sqlite3_bind_int(st, 5, 0); //days
+        sqlite3_bind_int(st, 4, [alarm mType]); //type
+        sqlite3_bind_int(st, 5, [alarm days]); //days
         sqlite3_bind_int(st, 6, [alarm.mUser mID]);
         sqlite3_bind_int(st, 7, [alarm.mAlarmNote mID]);
         sqlite3_bind_int(st, 8, [alarm.mMedicine mID]);

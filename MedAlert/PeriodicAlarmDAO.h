@@ -8,9 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import "DAO.h"
+#import "ModelPeriodicAlarm.h"
 
 @interface PeriodicAlarmDAO : DAO {
     
 }
+
+-(BOOL)insertPeriodicAlarm:(ModelPeriodicAlarm *)alarm;
+-(ModelPeriodicAlarm *)periodicAlarmByID:(NSInteger)alarm_id;
 
 @end

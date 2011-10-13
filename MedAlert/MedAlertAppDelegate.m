@@ -70,6 +70,18 @@
      */
 }
 
+//-(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+//{
+//    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"MyAlertView"
+//                                                        message:@"Local notification was received"
+//                                                       delegate:self cancelButtonTitle:@"OK"
+//                                              otherButtonTitles:nil];
+//    [alertView show];
+//    if (alertView) {
+//        [alertView release];
+//    }
+//}
+
 - (void)dealloc
 {
     [_window release];

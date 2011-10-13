@@ -30,6 +30,8 @@
     BOOL mFriday;
     BOOL mSaturday;
     BOOL mSunday;
+    
+    NSInteger mType;
 }
 
 @property (nonatomic, retain) ModelUser *mUser;
@@ -47,5 +49,12 @@
 @property (nonatomic, assign) BOOL mSunday;
 
 @property (nonatomic, assign) BOOL mActive;
+
+@property (nonatomic, readonly) NSInteger mType;
+@property (nonatomic, assign) NSString *mAlarmLabel;
+
+
+-(NSInteger)days;
+-(void)copyAlarm:(ModelAlarm *)alarm;
 
 @end

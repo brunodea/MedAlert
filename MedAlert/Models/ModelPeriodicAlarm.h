@@ -12,8 +12,10 @@
 
 @interface ModelPeriodicAlarm : ModelAlarm {
     double mAlertInterval;
+    NSInteger mAlarmID;
 }
 
 @property (nonatomic, assign) double mAlertInterval;
+@property (nonatomic, assign) NSInteger mAlarmID;
 
 @end

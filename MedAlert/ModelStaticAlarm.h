@@ -10,12 +10,12 @@
 #import "Model.h"
 #import "ModelAlarm.h"
 
-@interface ModelStaticAlarm : Model {
+@interface ModelStaticAlarm : ModelAlarm {
     NSDate *mTime; //HH:mm:ss
-    ModelAlarm *mAlarm;
+    NSInteger mAlarmID;
 }
 
 @property (nonatomic, retain) NSDate *mTime;
-@property (nonatomic, retain) ModelAlarm *mAlarm;
+@property (nonatomic, assign) NSInteger mAlarmID;
 
 @end

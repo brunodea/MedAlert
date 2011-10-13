@@ -12,6 +12,14 @@
 @implementation ModelStaticAlarm
 
 @synthesize mTime;
-@synthesize mAlarm;
+@synthesize mAlarmID;
+
+-(id)init
+{
+    [super init];
+    if(self != nil)
+        mType = 1;
+    return self;
+}
 
 @end

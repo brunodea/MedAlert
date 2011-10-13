@@ -8,12 +8,16 @@
 
 #import "AlarmConfViewController.h"
 #import "ModelMedicine.h"
+#import "MedicineDAO.h"
+#import "AlarmDAO.h"
+#import "PeriodicAlarmDAO.h"
 
 @implementation AlarmConfViewController
 
 @synthesize mIntervalTimePickerView;
 @synthesize mInitialDatePickerView;
 @synthesize mFinalDatePickerView;
+@synthesize mInitialTimePickerView;
 
 @synthesize mAlarmLabelTextField;
 
@@ -21,6 +25,7 @@
 @synthesize mContinueToFinalDateButton;
 @synthesize mContinueToNoteButton;
 @synthesize mSaveButton;
+@synthesize mContinueToInitTimeButton;
 
 @synthesize mMedName;
 
@@ -33,6 +38,7 @@
 @synthesize mInitialDateView;
 @synthesize mFinishDateView;
 @synthesize mAlarmNoteView;
+@synthesize mInitTimeView;
 
 @synthesize mCurrentPeriodicAlarm;
 
@@ -127,6 +133,7 @@
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [mAlarmLabelTextField resignFirstResponder];
+    [mNoteTextView resignFirstResponder];
     
     [super touchesBegan:touches withEvent:event];     
 }
@@ -184,6 +191,9 @@
         vc.view = mInitialDateView;
         [self.navigationController pushViewController:vc animated:YES];
         [vc release];
+        
+        mCurrentPeriodicAlarm.mAlarmLabel = [mAlarmLabelTextField text];
+        mCurrentPeriodicAlarm.mMedicine = [mMedicinesArray objectAtIndex:[mIntervalTimePickerView selectedRowInComponent:0]];
     }
 }
 
@@ -195,15 +205,39 @@
     [self.navigationController pushViewController:vc animated:YES];
     [vc release];
         
-    NSInteger medi = [mIntervalTimePickerView selectedRowInComponent:0];
-    NSInteger hi = [mIntervalTimePickerView selectedRowInComponent:1];
-    NSInteger mini = [mIntervalTimePickerView selectedRowInComponent:2];
+    NSDate *date = [mInitialTimePickerView date];
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    [df setDateFormat:@"dd/MM/yyyy"];
+    NSDateFormatter *df2 = [[NSDateFormatter alloc] init];
+    [df2 setDateFormat:@"HH:mm"];
     
-    ModelMedicine *medication = [mMedicinesArray objectAtIndex:medi];
-    NSNumber *hours = [mHoursArray objectAtIndex:hi];
-    NSNumber *minutes = [mMinutesArray objectAtIndex:mini];
+    NSDate *od = mCurrentPeriodicAlarm.mInitDate;
+    NSString *d = [NSString stringWithFormat:@"%@ %@", [df stringFromDate:od], [df2 stringFromDate:date]];
     
-    NSLog(@"%@ %dh %dmin",[medication mName],[hours integerValue],[minutes integerValue]);
+    
+    [df setDateFormat:@"dd/MM/yyyy HH:mm"];
+    
+    mCurrentPeriodicAlarm.mInitDate = [df dateFromString:d];
+    
+    NSLog(@"%@",d);
+    [df release];
+    [df2 release];
+}
+
+-(IBAction)continueToInitTimeButtonPressed:(id)sender
+{
+    UIViewController *vc = [[UIViewController alloc] init];
+    vc.title = @"Hora Inicial";
+    vc.view = mInitTimeView;
+    [self.navigationController pushViewController:vc animated:YES];
+    [vc release];
+    
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    [df setDateFormat:@"dd/MM/yyyy HH:mm"];
+    mCurrentPeriodicAlarm.mInitDate = [mInitialDatePickerView date];
+    
+    NSLog(@"%@",[df stringFromDate:[mInitialDatePickerView date]]);
+    [df release];
 }
 
 -(IBAction) continueToNoteButtonPressed:(id)sender
@@ -214,15 +248,21 @@
     [self.navigationController pushViewController:vc animated:YES];
     [vc release];
     
-    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init]; 
-    [dateFormatter setDateStyle:NSDateFormatterNoStyle]; 
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle]; 
-    [dateFormatter setDateFormat:(NSString*) @"dd/MM/yyyy HH:mm"]; 
+//    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+//    [dateFormatter setDateStyle:NSDateFormatterNoStyle];
+//    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+//    [dateFormatter setDateFormat:(NSString*) @"dd/MM/yyyy HH:mm"];
     
-    NSString *str = [dateFormatter stringFromDate:[mFinalDatePickerView date]];
-    NSLog(@"%@", str);
+//    NSString *str = [dateFormatter stringFromDate:[mFinalDatePickerView date]];
+//    NSLog(@"%@", str);
     
-    [dateFormatter release];
+//    [dateFormatter release];
+}
+
+-(void)textViewDidEndEditing:(UITextView *)textView
+{
+    [textView resignFirstResponder];
+    NSLog(@"blabla");
 }
 
 -(IBAction)saveButtonPressed:(id)sender
@@ -234,7 +274,47 @@
     [succ show];
     [succ release];
     
+    [self scheduleLocalNotificationForCurrentAlarm];
     [self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:1] animated:YES];
 }
+
+-(void)scheduleLocalNotificationForCurrentAlarm
+{
+    UILocalNotification *localNotif = [[UILocalNotification alloc] init];
+    if (localNotif == nil)
+        return;
+    
+//    NSMutableArray *arr = [[NSMutableArray alloc] init];
+//    
+//    for(NSInteger i = 0; i < 64; i++)
+//    {
+//        
+//    }
+//    
+    NSDateFormatter *f = [[NSDateFormatter alloc] init];
+    [f setDateFormat:@"dd/MM/yyyy HH:mm"];
+    [f release];
+    
+    localNotif.fireDate = [mCurrentPeriodicAlarm mInitDate];
+    localNotif.timeZone = [NSTimeZone defaultTimeZone];
+    
+    localNotif.alertBody = [NSString stringWithFormat:@"\"%@\"\nEstá na hora de tomar o medicamento \"%@\"!", [mCurrentPeriodicAlarm mAlarmLabel], [[mCurrentPeriodicAlarm mMedicine] mName]];
+    localNotif.alertAction = NSLocalizedString(@"Ver detalhes", nil);
+    
+    localNotif.soundName = UILocalNotificationDefaultSoundName;
+    localNotif.applicationIconBadgeNumber = 1;
+    
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNotif];
+    [localNotif release];
+    
+//    AlarmDAO *adao = [[AlarmDAO alloc] init];
+//    [adao insertAlarm:mCurrentPeriodicAlarm];
+//    [adao release];
+//    
+//    PeriodicAlarmDAO *pdao = [[AlarmDAO alloc] init];
+//    [pdao insertPeriodicAlarm:mCurrentPeriodicAlarm];
+//    [pdao release];
+}
+
 
 @end

@@ -26,6 +26,9 @@
 @synthesize mSaturday;
 @synthesize mSunday;
 
+@synthesize mType;
+@synthesize mAlarmLabel;
+
 -(id) initWithUser:(ModelUser *)user
           medicine:(ModelMedicine *)medicine
          alarmNote:(AlarmNote *)alarmNote
@@ -67,5 +70,30 @@
     [mCreationDate dealloc];
 }
 
+
+-(NSInteger)days
+{
+    return 0x00000000;
+}
+
+-(void)copyAlarm:(ModelAlarm *)alarm
+{
+    mActive = alarm.mActive;
+    mAlarmNote = alarm.mAlarmNote;
+    mCreationDate = alarm.mCreationDate;
+    mInitDate = alarm.mInitDate;
+    mMedicine = alarm.mMedicine;
+    mUser = alarm.mUser;
+    
+    mMonday = alarm.mMonday;
+    mTuesday = alarm.mTuesday;
+    mWednesday = alarm.mWednesday;
+    mThursday = alarm.mThursday;
+    mFriday = alarm.mFriday;
+    mSaturday = alarm.mSaturday;
+    mSunday = alarm.mSunday;
+    
+    mAlarmLabel = alarm.mAlarmLabel;
+}
 
 @end

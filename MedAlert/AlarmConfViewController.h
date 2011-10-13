@@ -10,17 +10,19 @@
 #import "ModelPeriodicAlarm.h"
 
 
-@interface AlarmConfViewController : UIViewController <UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate> {
+@interface AlarmConfViewController : UIViewController <UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate, UITextViewDelegate> {
     IBOutlet UITextField *mAlarmLabelTextField;
     
     IBOutlet UIPickerView *mIntervalTimePickerView;
     IBOutlet UIDatePicker *mInitialDatePickerView;
     IBOutlet UIDatePicker *mFinalDatePickerView;
+    IBOutlet UIDatePicker *mInitialTimePickerView;
     
     IBOutlet UIButton *mContinueToInitDateButton;
     IBOutlet UIButton *mContinueToFinalDateButton;
     IBOutlet UIButton *mContinueToNoteButton;
     IBOutlet UIButton *mSaveButton;
+    IBOutlet UIButton *mContinueToInitTimeButton;
     
     IBOutlet UILabel *mMedName;
     
@@ -33,6 +35,7 @@
     IBOutlet UIView *mInitialDateView;
     IBOutlet UIView *mFinishDateView;
     IBOutlet UIView *mAlarmNoteView;
+    IBOutlet UIView *mInitTimeView;
     
     ModelPeriodicAlarm *mCurrentPeriodicAlarm;
 }
@@ -42,11 +45,14 @@
 @property (nonatomic, retain) IBOutlet UIPickerView *mIntervalTimePickerView;
 @property (nonatomic, retain) IBOutlet UIDatePicker *mInitialDatePickerView;
 @property (nonatomic, retain) IBOutlet UIDatePicker *mFinalDatePickerView;
+@property (nonatomic, retain) IBOutlet UIDatePicker *mInitialTimePickerView;
 
 @property (nonatomic, retain) IBOutlet UIButton *mContinueToInitDateButton;
 @property (nonatomic, retain) IBOutlet UIButton *mContinueToFinalDateButton;
 @property (nonatomic, retain) IBOutlet UIButton *mContinueToNoteButton;
 @property (nonatomic, retain) IBOutlet UIButton *mSaveButton;
+@property (nonatomic, retain) IBOutlet UIButton *mContinueToInitTimeButton;
+
 
 @property (nonatomic, retain) IBOutlet UILabel *mMedName;
 
@@ -59,6 +65,8 @@
 @property (nonatomic, retain) IBOutlet UIView *mInitialDateView;
 @property (nonatomic, retain) IBOutlet UIView *mFinishDateView;
 @property (nonatomic, retain) IBOutlet UIView *mAlarmNoteView;
+@property (nonatomic, retain) IBOutlet UIView *mInitTimeView;
+
 
 @property (nonatomic, retain) ModelPeriodicAlarm *mCurrentPeriodicAlarm;
 
@@ -66,5 +74,7 @@
 -(IBAction) continueToFinalDateButtonPressed:(id)sender;
 -(IBAction) continueToNoteButtonPressed:(id)sender;
 -(IBAction) saveButtonPressed:(id)sender;
+
+-(void)scheduleLocalNotificationForCurrentAlarm;
 
 @end
